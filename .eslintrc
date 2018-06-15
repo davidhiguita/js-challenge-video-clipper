@@ -1,0 +1,67 @@
+{
+    "extends": ["airbnb", "plugin:jest/recommended"],
+    "globals": {
+        "context": true,
+        "document": true,
+        "mount": true,
+        "render": true,
+        "shallow": true,
+        "window": true
+    },
+    "plugins": ["jest"],
+    "env": {
+        "jest": true
+    },
+    "overrides": [{
+        "files": ["**/*.test.js"],
+        "rules": {
+            "import/no-duplicates": 0
+        }
+    },
+    {
+        "files": ["registerServiceWorker.js"],
+        "rules": {}
+    }],
+    "rules": {
+        "arrow-body-style": ["error", "as-needed"],
+        "comma-dangle": ["error", "never"],
+        "function-paren-newline": ["error", "consistent"],
+        "import/no-named-as-default": 0,
+        "import/prefer-default-export": 0,
+        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "jsx-a11y/alt-text": 0,
+        "jsx-a11y/click-events-have-key-events": 0,
+        "jsx-a11y/no-static-element-interactions": [
+            "error",
+            {
+              "handlers": []
+            }
+        ],
+        "jsx-a11y/anchor-is-valid": [ "error", {
+            "components": [ "Link" ],
+            "specialLink": [ "hrefLeft", "hrefRight" ],
+            "aspects": [ "invalidHref" ]
+        }],
+        "jsx-a11y/label-has-for": [ 0, {
+            "components": [ "Label" ],
+            "required": {
+                "every": [ "nesting", "id" ]
+            },
+            "allowChildren": false
+        }],
+        "max-len": [1, 120, 2, {"ignoreComments": true}],
+        "no-case-declarations": 0,
+        "no-confusing-arrow": 0,
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+        "no-shadow": 0,
+        "no-useless-constructor": 0,
+        "react/forbid-prop-types": 0,
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "react/jsx-indent": ["error", 4],
+        "react/jsx-indent-props": ["error", 4],
+        "react/no-array-index-key": 0,
+        "react/no-typos": 0,
+        "react/prefer-stateless-function": [2, { "ignorePureComponents": true }]
+    },
+    "parser": "babel-eslint"
+}
