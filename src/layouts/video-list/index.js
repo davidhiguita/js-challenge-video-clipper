@@ -15,6 +15,7 @@ const VideoList = () => {
     const renderVideos = (activeVideo, disabledControls, videos, globalHandle) =>
         videos.map((video, index) => (
             <VideoItem
+                active={activeVideo.id === video.id}
                 activeVideo={activeVideo}
                 disabledControls={disabledControls}
                 key={index}

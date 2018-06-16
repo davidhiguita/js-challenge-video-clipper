@@ -4,6 +4,26 @@
     margin-bottom: 5px auto;
     padding: 10px;
 
+    &--active.MuiPaper-root-1 {
+        border-left: 3px solid #2196F3;
+        .video-clipper__list--item {
+            &__play-button {
+                g {
+                    fill: #2196F3;
+                }
+            }
+            &__name {
+                color: #2196F3;
+            }
+            &__actions {
+                g {
+                    fill: #2196F3;
+                }
+            }
+        }
+
+    }
+
     &__play-button {
         grid-column: 1 / span 2;
 
@@ -13,9 +33,11 @@
     }
 
     &__name {
-        grid-column: 3 / span 7;
-        display: flex;
         align-items: center;
+        cursor: pointer;
+        display: flex;
+        font-weight: bold;
+        grid-column: 3 / span 7;
     }
 
     &__actions {

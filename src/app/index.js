@@ -37,7 +37,6 @@ export class App extends Component {
 
     setActiveVideo = (id) => {
         const newActiveVideo = this.state.videos.filter(video => video.id === id)[0];
-        newActiveVideo.playing = !newActiveVideo.playing;
         this.setState({
             activeVideo: newActiveVideo,
             disabledControls: this.setDisabledControls(newActiveVideo)
@@ -46,7 +45,6 @@ export class App extends Component {
 
     setPlayingActiveVideo = () => {
         const currentActiveVideo = { ...this.state.activeVideo };
-        currentActiveVideo.playing = !currentActiveVideo.playing;
         // eslint-disable-next-line react/no-unused-state
         this.setState({ activeVideo: currentActiveVideo });
     }
