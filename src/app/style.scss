@@ -1,0 +1,11 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.video-clipper {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    height: 100vh;
+}
