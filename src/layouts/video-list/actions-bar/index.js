@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // @material acomponents
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@material-ui/icons/AddCircle';
 
 // import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
@@ -12,9 +12,12 @@ import PreviousIcon from '@material-ui/icons/SkipPrevious';
 // @styles
 import './style.scss';
 
-const ActionsBar = ({ disabledControls }) => (
+const ActionsBar = ({ disabledControls, playVideo }) => (
     <div className="video-clipper__list__actions-bar">
-        <IconButton disabled={disabledControls.previous}>
+        <IconButton
+            disabled={disabledControls.previous}
+            onClick={() => playVideo('previous')}
+        >
             <PreviousIcon />
         </IconButton>
 
@@ -22,14 +25,18 @@ const ActionsBar = ({ disabledControls }) => (
             <AddIcon />
         </IconButton>
 
-        <IconButton disabled={disabledControls.next}>
+        <IconButton
+            disabled={disabledControls.previous}
+            onClick={() => playVideo('next')}
+        >
             <NextIcon />
         </IconButton>
     </div>
 );
 
 ActionsBar.propTypes = {
-    disabledControls: PropTypes.object.isRequired
+    disabledControls: PropTypes.object.isRequired,
+    playVideo: PropTypes.func.isRequired
 };
 
 export default ActionsBar;

@@ -30,7 +30,10 @@ const VideoList = () => {
                 globalHandle
             }) => (
                 <Paper className="video-clipper__list" elevation={4}>
-                    <ActionsBar disabledControls={disabledControls} />
+                    <ActionsBar
+                        disabledControls={disabledControls}
+                        playVideo={globalHandle.playVideo}
+                    />
                     {renderVideos(activeVideo, disabledControls, videos, globalHandle)}
                 </Paper>
             ) }

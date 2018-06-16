@@ -3,7 +3,7 @@
         grid-column: 1 / span 8;
         padding: 10px;
 
-        video {
+        iframe, video {
             height: calc(100vh - 20px);
             width: 100%;
         }

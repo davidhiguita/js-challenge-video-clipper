@@ -6,7 +6,6 @@ const ExternalVideo = ({ video }) =>
         <video
             controls
             src={video.url}
-            width="620"
         >
             <track kind="captions" />
         </video> :
