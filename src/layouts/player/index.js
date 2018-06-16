@@ -1,5 +1,8 @@
 import React from 'react';
 
+// @ own components
+import Paper from '@material-ui/core/Paper';
+
 import { Consumer } from '../../context';
 
 // @components
@@ -12,11 +15,13 @@ const Player = () => (
     <Consumer>
         {({ globalData: { activeVideo } }) => (
             <div className="video-clipper__player">
-                {
-                    activeVideo.isFromYoutube ?
-                        <YoutubeVideo video={activeVideo} /> :
-                        <ExternalVideo video={activeVideo} />
-                }
+                <Paper elevation={4}>
+                    {
+                        activeVideo.isFromYoutube ?
+                            <YoutubeVideo video={activeVideo} /> :
+                            <ExternalVideo video={activeVideo} />
+                    }
+                </Paper>
             </div>
         )}
     </Consumer>

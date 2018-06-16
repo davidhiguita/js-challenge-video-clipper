@@ -1,20 +1,24 @@
 import React from 'react';
 
+// @components
+import Paper from '@material-ui/core/Paper';
+
 // @context
 import { Consumer } from '../../context';
 
-// @components
-// import VideoItem from './video-item';
+import VideoItem from './video-item';
+import ActionsBar from './actions-bar';
 
 import './style.scss';
-import VideoItem from './video-item';
 
 const VideoList = () => {
-    const renderVideos = (videos, setActiveVideo) =>
+    const renderVideos = (activeVideo, disabledControls, videos, globalHandle) =>
         videos.map((video, index) => (
             <VideoItem
+                activeVideo={activeVideo}
+                disabledControls={disabledControls}
                 key={index}
-                setActiveVideo={id => setActiveVideo(id)}
+                actions={globalHandle}
                 video={video}
             />
         ));
@@ -22,12 +26,13 @@ const VideoList = () => {
     return (
         <Consumer>
             {({
-                globalData: { videos },
+                globalData: { activeVideo, disabledControls, videos },
                 globalHandle
             }) => (
-                <div className="video-clipper__list">
-                    {renderVideos(videos, globalHandle.setActiveVideo)}
-                </div>
+                <Paper className="video-clipper__list" elevation={4}>
+                    <ActionsBar disabledControls={disabledControls} />
+                    {renderVideos(activeVideo, disabledControls, videos, globalHandle)}
+                </Paper>
             ) }
         </Consumer>
     );

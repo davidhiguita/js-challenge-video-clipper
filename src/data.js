@@ -4,6 +4,7 @@ export const videos = [
         name: 'Big Buck Bunny',
         url: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
         isFromYoutube: false,
+        playing: false,
         tags: ['a'],
         type: 'main'
     }

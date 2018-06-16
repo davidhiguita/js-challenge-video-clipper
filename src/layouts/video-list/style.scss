@@ -1,6 +1,14 @@
 .video-clipper {
     &__list {
         grid-column: 9 / span 4;
+
+        &__add-button {
+            .MuiButton-fab-48 {
+                bottom: 32px;
+                position: relative;
+                right: 32px;
+            }
+        }
     }
 
     @media (max-width: 700px) {

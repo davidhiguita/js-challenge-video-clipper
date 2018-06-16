@@ -1,8 +1,7 @@
 .video-clipper__list--item {
-    box-shadow: 4px 4px 4px gray;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    margin-bottom: 3px;
+    margin-bottom: 5px auto;
     padding: 10px;
 
     &__play-button {

@@ -6,20 +6,35 @@ import IconButton from '@material-ui/core/IconButton';
 import TagIcon from '@material-ui/icons/Loyalty';
 import EditIcon from '@material-ui/icons/Create';
 import RemoveIcon from '@material-ui/icons/Delete';
+import Paper from '@material-ui/core/Paper';
 import PlayIcon from '@material-ui/icons/PlayCircleFilled';
+import PauseIcon from '@material-ui/icons/PauseCircleFilled';
 import YoutubeIcon from '@material-ui/icons/PlayCircleOutline';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import './style.scss';
 
-const VideoItem = ({ setActiveVideo, video }) => (
-    <div className="video-clipper__list--item">
+const choosePlayIcon = (activeVideo, video, action) => {
+    if ((activeVideo.id === video.id) && activeVideo.playing) {
+        if (video.isFromYoutube) {
+            return <YoutubeIcon onClick={action} />;
+        }
+        return <PlayIcon onClick={action} />;
+    }
+    return <PauseIcon onClick={action} />;
+};
+
+const VideoItem = ({ activeVideo, actions, video }) => (
+    <Paper className="video-clipper__list--item" elevation={6}>
         <div className="video-clipper__list--item__play-button">
             <IconButton>
                 {
-                    video.isFromYoutube ?
-                        <YoutubeIcon onClick={setActiveVideo(video.id)} /> :
-                        <PlayIcon onClick={() => setActiveVideo(video.id)} /> }
+                    choosePlayIcon(
+                        activeVideo,
+                        video,
+                        () => actions.setActiveVideo(video.id)
+                    )
+                }
             </IconButton>
         </div>
 
@@ -40,11 +55,12 @@ const VideoItem = ({ setActiveVideo, video }) => (
                 <RemoveIcon />
             </Tooltip>
         </div>
-    </div>
+    </Paper>
 );
 
 VideoItem.propTypes = {
-    setActiveVideo: PropTypes.func.isRequired,
+    activeVideo: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired,
     video: PropTypes.object.isRequired
 };
 
