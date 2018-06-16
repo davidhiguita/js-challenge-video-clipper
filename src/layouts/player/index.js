@@ -11,15 +11,24 @@ import YoutubeVideo from './youtube-video';
 
 import './style.scss';
 
+const renderPlayer = activeVideo =>
+    activeVideo.isFromYoutube ?
+        <YoutubeVideo video={activeVideo} /> :
+        <ExternalVideo video={activeVideo} />;
+
+const renderEmptyVideo = () => (
+    <div className="video-clipper__player__nodata">No  video selected</div>
+);
+
 const Player = () => (
     <Consumer>
         {({ globalData: { activeVideo } }) => (
             <div className="video-clipper__player">
                 <Paper elevation={4}>
                     {
-                        activeVideo.isFromYoutube ?
-                            <YoutubeVideo video={activeVideo} /> :
-                            <ExternalVideo video={activeVideo} />
+                        activeVideo ?
+                            renderPlayer(activeVideo) :
+                            renderEmptyVideo()
                     }
                 </Paper>
             </div>

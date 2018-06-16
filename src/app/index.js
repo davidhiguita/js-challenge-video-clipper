@@ -8,22 +8,24 @@ import VideoList from '../layouts/video-list';
 import { Provider } from '../context';
 
 // @data
-import { videos } from '../data';
+// import { videos } from '../data';
 
 import './style.scss';
 
 export class App extends Component {
     state = {
-        activeVideo: videos.filter(video => video.type === 'main')[0],
+        // eslint-disable-next-line react/no-unused-state
+        activeVideoIndex: 0,
+        activeVideo: null,
         disabledControls: {
             next: true,
             previous: true
         },
         // eslint-disable-next-line react/no-unused-state
-        activeVideoIndex: 0,
+        mainVideo: null,
         // eslint-disable-next-line react/no-unused-state
         videoRef: null,
-        videos
+        videos: []
     }
 
     setDisabledControls = (activeVideo) => {

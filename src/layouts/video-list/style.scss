@@ -1,8 +1,10 @@
+$padding-controls: 10px;
+$top-controls-height: 48px;
+
 .video-clipper {
-    &__list {
+    &__controls {
         grid-column: 9 / span 4;
-        margin-right: 10px;
-        margin-top: 10px;
+        padding: $padding-controls;
 
         &__add-button {
             .MuiButton-fab-48 {
@@ -11,11 +13,34 @@
                 right: 32px;
             }
         }
+
+        &__list {
+            height: calc(100vh - #{$top-controls-height} - 3 * #{$padding-controls});
+            margin-top: $padding-controls;
+            overflow-y: auto;
+
+            &__nodata {
+                align-items: center;
+                display: flex;
+                height: calc(100vh - #{$top-controls-height} - 3 * #{$padding-controls});
+                justify-content: center;
+            }
+        }
     }
 
     @media (max-width: 700px) {
-        &__list {
+        &__controls {
             grid-column: 1 / span 12;
+            padding-top: 0;
+
+            &__list {
+                height: 50vh;
+                margin-top: $padding-controls;
+
+                &__nodata {
+                    height: 50vh;
+                }
+            }
         }
     }
 }

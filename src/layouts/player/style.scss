@@ -1,17 +1,38 @@
+$padding-player: 10px;
+
 .video-clipper {
     &__player {
         grid-column: 1 / span 8;
-        padding: 10px;
+        padding: $padding-player;
+
+        .MuiPaper-root-1 {
+            height: calc(100vh - 2 * #{$padding-player});
+        }
 
         iframe, video {
-            height: calc(100vh - 20px);
+            /*height: calc(100vh - 20px);*/
             width: 100%;
+        }
+
+        &__nodata {
+            align-items: center;
+            display: flex;
+            height: calc(100vh - 2 * #{$padding-player});
+            justify-content: center;
         }
     }
 
     @media (max-width: 700px) {
         &__player {
             grid-column: 1 / span 12;
+
+            .MuiPaper-root-1 {
+                height: 35vh;
+            }
+
+            &__nodata {
+                height: calc(35vh - 2 * #{$padding-player});
+            }
         }
     }
 }

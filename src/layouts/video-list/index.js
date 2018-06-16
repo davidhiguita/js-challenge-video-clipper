@@ -12,31 +12,58 @@ import ActionsBar from './actions-bar';
 import './style.scss';
 
 const VideoList = () => {
-    const renderVideos = (activeVideo, disabledControls, videos, globalHandle) =>
+    const renderClips = (activeVideo, videos, globalHandle) =>
         videos.map((video, index) => (
             <VideoItem
                 active={activeVideo.id === video.id}
                 activeVideo={activeVideo}
-                disabledControls={disabledControls}
                 key={index}
                 actions={globalHandle}
                 video={video}
             />
         ));
 
+    const renderEmptyClipsList = () => (
+        <div className="video-clipper__controls__list__nodata">
+            No clips created
+        </div>
+    );
+
+    const renderMainVideo = (activeVideo, globalHandle, mainVideo) => (
+        <VideoItem
+            active={activeVideo.id === mainVideo.id}
+            activeVideo={activeVideo}
+            key="mainVideo"
+            actions={globalHandle}
+            video={mainVideo}
+        />
+    );
+
     return (
         <Consumer>
             {({
-                globalData: { activeVideo, disabledControls, videos },
+                globalData: {
+                    activeVideo, disabledControls, mainVideo, videos
+                },
                 globalHandle
             }) => (
-                <Paper className="video-clipper__list" elevation={4}>
-                    <ActionsBar
-                        disabledControls={disabledControls}
-                        playVideo={globalHandle.playVideo}
-                    />
-                    {renderVideos(activeVideo, disabledControls, videos, globalHandle)}
-                </Paper>
+                <div className="video-clipper__controls">
+                    <Paper elevation={4}>
+                        <ActionsBar
+                            disabledControls={disabledControls}
+                            playVideo={globalHandle.playVideo}
+                        />
+                    </Paper>
+
+                    <Paper className="video-clipper__controls__list" elevation={4}>
+                        {
+                            mainVideo ?
+                                renderMainVideo(activeVideo, globalHandle, mainVideo) :
+                                renderEmptyClipsList()
+                        }
+                        { renderClips(activeVideo, videos, globalHandle) }
+                    </Paper>
+                </div>
             ) }
         </Consumer>
     );
