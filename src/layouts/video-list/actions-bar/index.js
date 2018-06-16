@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 // @material acomponents
 import AddIcon from '@material-ui/icons/AddCircle';
 
-// import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import NextIcon from '@material-ui/icons/SkipNext';
 import PreviousIcon from '@material-ui/icons/SkipPrevious';
+import Tooltip from '@material-ui/core/Tooltip';
 
 // @styles
 import './style.scss';
 
-const ActionsBar = ({ disabledControls, playVideo }) => (
+const ActionsBar = ({ disabledControls, openModalCreate, playVideo }) => (
     <div className="video-clipper__list__actions-bar">
         <IconButton
             disabled={disabledControls.previous}
@@ -21,9 +21,11 @@ const ActionsBar = ({ disabledControls, playVideo }) => (
             <PreviousIcon />
         </IconButton>
 
-        <IconButton>
-            <AddIcon />
-        </IconButton>
+        <Tooltip title="Create a clip or set video">
+            <IconButton onClick={openModalCreate}>
+                <AddIcon />
+            </IconButton>
+        </Tooltip>
 
         <IconButton
             disabled={disabledControls.next}
@@ -36,6 +38,7 @@ const ActionsBar = ({ disabledControls, playVideo }) => (
 
 ActionsBar.propTypes = {
     disabledControls: PropTypes.object.isRequired,
+    openModalCreate: PropTypes.func.isRequired,
     playVideo: PropTypes.func.isRequired
 };
 

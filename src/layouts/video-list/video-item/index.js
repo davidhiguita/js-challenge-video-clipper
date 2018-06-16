@@ -63,12 +63,20 @@ const VideoItem = (props) => {
                         <TagIcon />
                     </Tooltip>
                 )}
-                <Tooltip title="Edit">
-                    <EditIcon />
-                </Tooltip>
-                <Tooltip title="Remove">
-                    <RemoveIcon />
-                </Tooltip>
+                {
+                    isClip && (
+                        <Tooltip title="Edit">
+                            <EditIcon />
+                        </Tooltip>
+                    )
+                }
+                {
+                    isClip && (
+                        <Tooltip title="Remove">
+                            <RemoveIcon />
+                        </Tooltip>
+                    )
+                }
             </div>
         </Paper>
     );

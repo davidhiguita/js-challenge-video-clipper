@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
 // @components
+import ModalCreate from '../components/modal-create';
+
+// @layouts
 import Player from '../layouts/player';
 import VideoList from '../layouts/video-list';
 
@@ -16,7 +19,7 @@ export class App extends Component {
     state = {
         // eslint-disable-next-line react/no-unused-state
         activeVideoIndex: 0,
-        activeVideo: null,
+        activeVideo: mainVideo,
         // eslint-disable-next-line react/no-unused-state
         clips: [],
         disabledControls: {
@@ -25,6 +28,8 @@ export class App extends Component {
         },
         // eslint-disable-next-line react/no-unused-state
         mainVideo,
+        // eslint-disable-next-line react/no-unused-state
+        visibleModalCreate: false,
         // eslint-disable-next-line react/no-unused-state
         videoRef: null
     }
@@ -72,6 +77,12 @@ export class App extends Component {
         this.setState({ activeVideo: currentActiveVideo });
     }
 
+    toggleModalCreate = () => {
+        this.setState(prevState => ({
+            visibleModalCreate: !prevState.visibleModalCreate
+        }));
+    }
+
     playVideo = (type = 'previous') => {
         const { activeVideo, videos } = this.state;
         const numberOfVideos = videos.length;
@@ -94,15 +105,22 @@ export class App extends Component {
             globalHandle: {
                 playVideo: this.playVideo,
                 setActiveVideo: this.setActiveVideo,
-                setPlayingActiveVideo: this.setPlayingActiveVideo
+                setPlayingActiveVideo: this.setPlayingActiveVideo,
+                toggleModalCreate: this.toggleModalCreate
             }
         };
+
+        const { visibleModalCreate } = this.state;
 
         return (
             <Provider value={contextValue}>
                 <div className="video-clipper">
                     <Player />
                     <VideoList />
+                    <ModalCreate
+                        toggle={this.toggleModalCreate}
+                        visible={visibleModalCreate}
+                    />
                 </div>
             </Provider>
         );

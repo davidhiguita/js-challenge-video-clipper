@@ -40,7 +40,10 @@ const VideoList = () => {
         <Consumer>
             {({
                 globalData: {
-                    activeVideo, disabledControls, mainVideo, clips
+                    activeVideo,
+                    clips,
+                    disabledControls,
+                    mainVideo
                 },
                 globalHandle
             }) => (
@@ -48,6 +51,7 @@ const VideoList = () => {
                     <Paper elevation={4}>
                         <ActionsBar
                             disabledControls={disabledControls}
+                            openModalCreate={globalHandle.toggleModalCreate}
                             playVideo={globalHandle.playVideo}
                         />
                     </Paper>
