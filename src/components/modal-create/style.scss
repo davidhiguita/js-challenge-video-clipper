@@ -1,0 +1,35 @@
+.modal-create-video {
+    &__content {
+        .video-form {
+            &__options-inline {
+                align-items: center;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                grid-gap: 10px;
+
+                &__type {
+                    margin-top: 7px;
+                }
+
+                &__isyoutube {
+                    margin-top: 20px;
+                }
+
+                @media (max-width: 700px) {
+                    &__duration {
+                        grid-column: 1 / span 3;
+                    }
+
+                    &__type {
+                        grid-column: 1 / span 1;
+                    }
+
+                    &__isyoutube {
+                        grid-column: 2 / span 3;
+                        justify-content: flex-end;
+                    }
+                }
+            }
+        }
+    }
+}

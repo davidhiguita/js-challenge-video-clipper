@@ -1,39 +1,74 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 // @ own components
 import Paper from '@material-ui/core/Paper';
 
 import { Consumer } from '../../context';
 
-// @components
-import ExternalVideo from './external-video';
-import YoutubeVideo from './youtube-video';
-
 import './style.scss';
 
-const renderPlayer = activeVideo =>
-    activeVideo.isFromYoutube ?
-        <YoutubeVideo video={activeVideo} /> :
-        <ExternalVideo video={activeVideo} />;
+class Player extends Component {
+    state = {
+        // eslint-disable-next-line react/no-unused-state
+        videoRef: null
+    }
 
-const renderEmptyVideo = () => (
-    <div className="video-clipper__player__nodata">No  video selected</div>
-);
+    setVideoRef = (ref) => {
+        // eslint-disable-next-line react/no-unused-state
+        this.setState({ videoRef: ref });
+    }
 
-const Player = () => (
-    <Consumer>
-        {({ globalData: { activeVideo } }) => (
-            <div className="video-clipper__player">
-                <Paper elevation={4}>
-                    {
-                        activeVideo ?
-                            renderPlayer(activeVideo) :
-                            renderEmptyVideo()
-                    }
-                </Paper>
-            </div>
-        )}
-    </Consumer>
-);
+    renderEmptyVideo = () => (
+        <div className="video-clipper__player__nodata">No  video selected</div>
+    )
+
+    renderPlayer = (activeVideo, mainVideo) => {
+        if (mainVideo.isFromYoutube) {
+            return (
+                <iframe
+                    allowFullScreen
+                    frameBorder="0"
+                    ref={(video) => {
+                        this.videoRef = video;
+                    }}
+                    src={activeVideo.url}
+                    title={activeVideo.id}
+                />
+            );
+        }
+        return (
+            <video
+                controls
+                ref={(video) => {
+                    this.videoRef = video;
+                }}
+                src={activeVideo.url}
+            >
+                <track kind="captions" />
+            </video>
+        );
+    }
+
+    render() {
+        return (
+            <Consumer>
+                {({
+                    globalData: { activeVideo, mainVideo }
+                }) => (
+                    <div className="video-clipper__player">
+                        <Paper elevation={4}>
+                            {
+                                activeVideo ?
+                                    this.renderPlayer(activeVideo, mainVideo) :
+                                    this.renderEmptyVideo()
+                            }
+                        </Paper>
+                    </div>
+                )}
+            </Consumer>
+        );
+    }
+}
+
 
 export default Player;

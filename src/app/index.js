@@ -17,21 +17,14 @@ import './style.scss';
 
 export class App extends Component {
     state = {
-        // eslint-disable-next-line react/no-unused-state
-        activeVideoIndex: 0,
         activeVideo: mainVideo,
-        // eslint-disable-next-line react/no-unused-state
         clips: [],
         disabledControls: {
             next: true,
             previous: true
         },
-        // eslint-disable-next-line react/no-unused-state
         mainVideo,
-        // eslint-disable-next-line react/no-unused-state
-        visibleModalCreate: false,
-        // eslint-disable-next-line react/no-unused-state
-        videoRef: null
+        visibleModalCreate: false
     }
 
     setDisabledControls = (activeVideo) => {
@@ -73,7 +66,6 @@ export class App extends Component {
 
     setPlayingActiveVideo = () => {
         const currentActiveVideo = { ...this.state.activeVideo };
-        // eslint-disable-next-line react/no-unused-state
         this.setState({ activeVideo: currentActiveVideo });
     }
 
@@ -99,6 +91,26 @@ export class App extends Component {
         });
     }
 
+    addVideo = (video, callback, isClip = true) => {
+        const newVideo = { ...video };
+        if (isClip) {
+            newVideo.id = this.state.clips.length;
+            this.setState(prevState => ({
+                clips: [
+                    ...prevState,
+                    newVideo
+                ],
+                visibleModalCreate: false
+            }), () => callback());
+        } else {
+            this.setState({
+                activeVideo: newVideo,
+                mainVideo: newVideo,
+                visibleModalCreate: false
+            }, () => callback());
+        }
+    }
+
     render() {
         const contextValue = {
             globalData: this.state,
@@ -118,6 +130,7 @@ export class App extends Component {
                     <Player />
                     <VideoList />
                     <ModalCreate
+                        addVideo={this.addVideo}
                         toggle={this.toggleModalCreate}
                         visible={visibleModalCreate}
                     />
