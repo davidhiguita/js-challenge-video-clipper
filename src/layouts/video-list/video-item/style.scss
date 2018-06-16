@@ -1,3 +1,6 @@
+$color-active: #2196F3;
+$color-main: #673AB7;
+
 .video-clipper__list--item {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -5,19 +8,39 @@
     padding: 10px;
 
     &--active.MuiPaper-root-1 {
-        border-left: 3px solid #2196F3;
+        border-left: 3px solid $color-active;
         .video-clipper__list--item {
             &__play-button {
                 g {
-                    fill: #2196F3;
+                    fill: $color-active;
                 }
             }
             &__name {
-                color: #2196F3;
+                color: $color-active;
             }
             &__actions {
                 g {
-                    fill: #2196F3;
+                    fill: $color-active;
+                }
+            }
+        }
+
+    }
+
+    &--is-main.MuiPaper-root-1 {
+        border-left: 3px solid $color-main;
+        .video-clipper__list--item {
+            &__play-button {
+                g {
+                    fill: $color-main;
+                }
+            }
+            &__name {
+                color: $color-main;
+            }
+            &__actions {
+                g {
+                    fill: $color-main;
                 }
             }
         }

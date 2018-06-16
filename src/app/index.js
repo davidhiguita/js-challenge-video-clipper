@@ -8,7 +8,7 @@ import VideoList from '../layouts/video-list';
 import { Provider } from '../context';
 
 // @data
-// import { videos } from '../data';
+import { mainVideo } from '../data';
 
 import './style.scss';
 
@@ -17,28 +17,49 @@ export class App extends Component {
         // eslint-disable-next-line react/no-unused-state
         activeVideoIndex: 0,
         activeVideo: null,
+        // eslint-disable-next-line react/no-unused-state
+        clips: [],
         disabledControls: {
             next: true,
             previous: true
         },
         // eslint-disable-next-line react/no-unused-state
-        mainVideo: null,
+        mainVideo,
         // eslint-disable-next-line react/no-unused-state
-        videoRef: null,
-        videos: []
+        videoRef: null
     }
 
     setDisabledControls = (activeVideo) => {
-        const newActiveVideo = activeVideo || this.state.activeVideo;
-        const currentDisabledControls = { ...this.state.disabledControls };
-        const currentActiveVideoIndex = this.state.videos.findIndex(video => video.id === newActiveVideo.id);
-        currentDisabledControls.next = currentActiveVideoIndex === this.state.videos.length - 1;
-        currentDisabledControls.previous = currentActiveVideoIndex === 0;
-        return currentDisabledControls;
+        const {
+            activeVideo: currentActiveVideo,
+            clips,
+            disabledControls
+        } = this.state;
+
+        if (clips.length) {
+            const newActiveVideo = activeVideo || currentActiveVideo;
+            const currentDisabledControls = { ...disabledControls };
+            const currentActiveVideoIndex = clips.findIndex(video => video.id === newActiveVideo.id);
+            currentDisabledControls.next = currentActiveVideoIndex === clips.length - 1;
+            currentDisabledControls.previous = currentActiveVideoIndex === 0;
+            return currentDisabledControls;
+        }
+        return {
+            next: true,
+            previous: true
+        };
     };
 
-    setActiveVideo = (id) => {
-        const newActiveVideo = this.state.videos.filter(video => video.id === id)[0];
+    setActiveVideo = (id, isClip = true) => {
+        const {
+            clips,
+            mainVideo
+        } = this.state;
+
+        const newActiveVideo = isClip && clips.length ?
+            clips.filter(video => video.id === id)[0] :
+            mainVideo;
+
         this.setState({
             activeVideo: newActiveVideo,
             disabledControls: this.setDisabledControls(newActiveVideo)

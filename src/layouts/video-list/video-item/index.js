@@ -10,30 +10,44 @@ import RemoveIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
 import PlayIcon from '@material-ui/icons/PlayCircleFilled';
 import YoutubeIcon from '@material-ui/icons/PlayCircleOutline';
+import MainVideoIcon from '@material-ui/icons/VideoLibrary';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import './style.scss';
 
-const choosePlayIcon = (video, action) => {
-    if (video.isFromYoutube) {
-        return <YoutubeIcon onClick={action} />;
+const choosePlayIcon = (isClip, video, action) => {
+    if (isClip) {
+        if (video.isFromYoutube) {
+            return <YoutubeIcon onClick={action} />;
+        }
+        return <PlayIcon onClick={action} />;
     }
-    return <PlayIcon onClick={action} />;
+    return <MainVideoIcon onClick={action} />;
 };
 
-const VideoItem = ({ active, actions, video }) => {
+const VideoItem = (props) => {
+    const {
+        active,
+        actions,
+        isClip,
+        video
+    } = props;
+
     const classes = classNames(
         'video-clipper__list--item',
-        { 'video-clipper__list--item--active': active }
+        { 'video-clipper__list--item--active': active },
+        { 'video-clipper__list--item--is-main': !isClip },
     );
+
     return (
         <Paper className={classes} elevation={1}>
             <div className="video-clipper__list--item__play-button">
                 <IconButton>
                     {
                         choosePlayIcon(
+                            isClip,
                             video,
-                            () => actions.setActiveVideo(video.id)
+                            () => actions.setActiveVideo(video.id, isClip)
                         )
                     }
                 </IconButton>
@@ -61,9 +75,15 @@ const VideoItem = ({ active, actions, video }) => {
 };
 
 VideoItem.propTypes = {
-    active: PropTypes.bool.isRequired,
+    active: PropTypes.bool,
     actions: PropTypes.object.isRequired,
+    isClip: PropTypes.bool,
     video: PropTypes.object.isRequired
+};
+
+VideoItem.defaultProps = {
+    active: false,
+    isClip: true
 };
 
 export default VideoItem;

@@ -12,11 +12,10 @@ import ActionsBar from './actions-bar';
 import './style.scss';
 
 const VideoList = () => {
-    const renderClips = (activeVideo, videos, globalHandle) =>
-        videos.map((video, index) => (
+    const renderClips = (activeVideo, clips, globalHandle) =>
+        clips.map((video, index) => (
             <VideoItem
                 active={activeVideo.id === video.id}
-                activeVideo={activeVideo}
                 key={index}
                 actions={globalHandle}
                 video={video}
@@ -31,10 +30,8 @@ const VideoList = () => {
 
     const renderMainVideo = (activeVideo, globalHandle, mainVideo) => (
         <VideoItem
-            active={activeVideo.id === mainVideo.id}
-            activeVideo={activeVideo}
-            key="mainVideo"
             actions={globalHandle}
+            isClip={false}
             video={mainVideo}
         />
     );
@@ -43,7 +40,7 @@ const VideoList = () => {
         <Consumer>
             {({
                 globalData: {
-                    activeVideo, disabledControls, mainVideo, videos
+                    activeVideo, disabledControls, mainVideo, clips
                 },
                 globalHandle
             }) => (
@@ -61,7 +58,7 @@ const VideoList = () => {
                                 renderMainVideo(activeVideo, globalHandle, mainVideo) :
                                 renderEmptyClipsList()
                         }
-                        { renderClips(activeVideo, videos, globalHandle) }
+                        { renderClips(activeVideo, clips, globalHandle) }
                     </Paper>
                 </div>
             ) }
