@@ -1,6 +1,8 @@
 .video-clipper {
     &__list {
         grid-column: 9 / span 4;
+        margin-right: 10px;
+        margin-top: 10px;
 
         &__add-button {
             .MuiButton-fab-48 {

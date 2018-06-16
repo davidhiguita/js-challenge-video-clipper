@@ -26,7 +26,7 @@ const ActionsBar = ({ disabledControls, playVideo }) => (
         </IconButton>
 
         <IconButton
-            disabled={disabledControls.previous}
+            disabled={disabledControls.next}
             onClick={() => playVideo('next')}
         >
             <NextIcon />

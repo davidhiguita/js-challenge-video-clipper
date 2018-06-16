@@ -14,32 +14,33 @@ import './style.scss';
 
 export class App extends Component {
     state = {
-        // eslint-disable-next-line react/no-unused-state
         activeVideo: videos.filter(video => video.type === 'main')[0],
-        // eslint-disable-next-line react/no-unused-state
         disabledControls: {
-            next: false,
-            previous: false
+            next: true,
+            previous: true
         },
         // eslint-disable-next-line react/no-unused-state
         activeVideoIndex: 0,
         // eslint-disable-next-line react/no-unused-state
         videoRef: null,
-        // eslint-disable-next-line react/no-unused-state
         videos
     }
 
-    setActiveVideo = (id) => {
-        const newActiveVideo = this.state.videos.filter(video => video.id === id)[0];
-        newActiveVideo.playing = !newActiveVideo.playing;
+    setDisabledControls = (activeVideo) => {
+        const newActiveVideo = activeVideo || this.state.activeVideo;
         const currentDisabledControls = { ...this.state.disabledControls };
         const currentActiveVideoIndex = this.state.videos.findIndex(video => video.id === newActiveVideo.id);
         currentDisabledControls.next = currentActiveVideoIndex === this.state.videos.length - 1;
         currentDisabledControls.previous = currentActiveVideoIndex === 0;
-        // eslint-disable-next-line react/no-unused-state
+        return currentDisabledControls;
+    };
+
+    setActiveVideo = (id) => {
+        const newActiveVideo = this.state.videos.filter(video => video.id === id)[0];
+        newActiveVideo.playing = !newActiveVideo.playing;
         this.setState({
             activeVideo: newActiveVideo,
-            disabledControls: currentDisabledControls
+            disabledControls: this.setDisabledControls(newActiveVideo)
         });
     }
 
@@ -60,7 +61,10 @@ export class App extends Component {
         } else if (currentActiveVideoIndex > 0) {
             newActiveVideoIndex -= 1;
         }
-        this.setState({ activeVideo: videos[newActiveVideoIndex] });
+        this.setState({
+            activeVideo: videos[newActiveVideoIndex],
+            disabledControls: this.setDisabledControls(videos[newActiveVideoIndex])
+        });
     }
 
     render() {

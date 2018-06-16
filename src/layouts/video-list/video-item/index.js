@@ -25,7 +25,7 @@ const choosePlayIcon = (activeVideo, video, action) => {
 };
 
 const VideoItem = ({ activeVideo, actions, video }) => (
-    <Paper className="video-clipper__list--item" elevation={6}>
+    <Paper className="video-clipper__list--item" elevation={1}>
         <div className="video-clipper__list--item__play-button">
             <IconButton>
                 {
