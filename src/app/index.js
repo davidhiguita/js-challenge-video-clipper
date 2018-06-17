@@ -123,9 +123,31 @@ export class App extends Component {
         });
     }
 
-    editVideo = (id, type) => {
-        console.log('editVideo::', id, type, this.state.modalCreateInfo);
-        this.setState({ modalCreateInfo: { ...modalCreateInitialState } });
+    editVideo = () => {
+        const { clips, mainVideo, modalCreateInfo } = this.state;
+        if (modalCreateInfo.type === 'video') {
+            this.setState(prevState => ({
+                mainVideo: {
+                    ...prevState.mainVideo,
+                    ...modalCreateInfo
+                },
+                modalCreateInfo: { ...modalCreateInitialState }
+            }));
+        } else {
+            const currentClips = [...clips];
+            const currentModalCreateInfo = { ...modalCreateInfo };
+            const clipIndex = clips.findIndex(clip => clip.id === modalCreateInfo.id);
+            currentModalCreateInfo.url = modalCreateInfo.isFromYoutube
+                ? `${mainVideo.url}?start=${modalCreateInfo.start}&end=${modalCreateInfo.end}`
+                : `${mainVideo.url}#t=${modalCreateInfo.start},${modalCreateInfo.end}`;
+
+            currentClips[clipIndex] = currentModalCreateInfo;
+
+            this.setState({
+                clips: currentClips,
+                modalCreateInfo: { ...modalCreateInitialState }
+            });
+        }
     }
 
     handleModalCreateChange = (name, isCheckbox = false) => (event) => {
@@ -164,7 +186,7 @@ export class App extends Component {
             };
             currentModalInfo.actionType = typeOpen;
             currentModalInfo.type = typeVideo;
-            currentModalInfo.visible = !currentModalInfo.visible;
+            currentModalInfo.visible = true;
             this.setState({ modalCreateInfo: currentModalInfo });
         }
     }
@@ -208,6 +230,8 @@ export class App extends Component {
         };
 
         const { mainVideo, modalCreateInfo } = this.state;
+
+        console.log('clips>>', this.state.clips);
 
         return (
             <Provider value={contextValue}>
