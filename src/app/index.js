@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 // @components
+import ModalConfirmation from '../components/modal-confirmation';
 import ModalCreate from '../components/modal-create';
 
 // @layouts
@@ -36,7 +37,11 @@ export class App extends Component {
             previous: true
         },
         mainVideo,
-        modalCreateInfo: modalCreateInitialState
+        modalCreateInfo: { ...modalCreateInitialState },
+        modalConfirmationInfo: {
+            id: null,
+            visible: false
+        }
     }
 
     setDisabledControls = (activeVideo) => {
@@ -97,7 +102,7 @@ export class App extends Component {
                 ...prevState.clips,
                 newClip
             ],
-            modalCreateInfo: modalCreateInitialState
+            modalCreateInfo: { ...modalCreateInitialState }
         }));
     }
 
@@ -114,13 +119,13 @@ export class App extends Component {
             activeVideo: newVideo,
             clips: [],
             mainVideo: newVideo,
-            modalCreateInfo: modalCreateInitialState
+            modalCreateInfo: { ...modalCreateInitialState }
         });
     }
 
-    editVideo = () => {
-        console.log('editVideo::', this.state.modalCreateInfo);
-        this.toggleModalCreate();
+    editVideo = (id, type) => {
+        console.log('editVideo::', id, type, this.state.modalCreateInfo);
+        this.setState({ modalCreateInfo: { ...modalCreateInitialState } });
     }
 
     handleModalCreateChange = (name, isCheckbox = false) => (event) => {
@@ -130,13 +135,25 @@ export class App extends Component {
         this.setState({ modalCreateInfo: currentModalInfo });
     }
 
-    resetModalCreateState = () => this.setState({ modalCreateInfo: modalCreateInitialState })
+    removeVideo = () => {
+        const { clips, modalConfirmationInfo: { id } } = this.state;
+        const videoIndex = clips.findIndex(clip => clip.id === id);
+        const newClips = [...clips];
+        newClips.splice(videoIndex, 1);
+        this.setState({
+            clips: newClips,
+            modalCreateInfo: { ...modalCreateInitialState },
+            modalConfirmationInfo: { id: null, visible: false }
+        });
+    }
+
+    resetModalCreateState = () => this.setState({ modalCreateInfo: { ...modalCreateInitialState } })
 
     toggleModalCreate = (typeVideo, typeOpen, video = null) => {
         if (this.state.modalCreateInfo.visible) {
             this.setState({ modalCreateInfo: modalCreateInitialState });
         } else {
-            const selectedvideo = video ? { ...video } : modalCreateInitialState;
+            const selectedvideo = video ? { ...video } : { ...modalCreateInitialState };
             if (!video) {
                 delete selectedvideo.actionType;
                 delete selectedvideo.visible;
@@ -150,6 +167,15 @@ export class App extends Component {
             currentModalInfo.visible = !currentModalInfo.visible;
             this.setState({ modalCreateInfo: currentModalInfo });
         }
+    }
+
+    toggleModalRemove = (id) => {
+        this.setState(prevState => ({
+            modalConfirmationInfo: {
+                id: prevState.modalConfirmationInfo.visible ? null : id,
+                visible: !prevState.modalConfirmationInfo.visible
+            }
+        }));
     }
 
     playVideo = (type = 'previous') => {
@@ -172,18 +198,16 @@ export class App extends Component {
         const contextValue = {
             globalData: this.state,
             globalHandle: {
-                editVideo: this.editVideo,
                 handleModalCreateChange: this.handleModalCreateChange,
                 playVideo: this.playVideo,
                 setActiveVideo: this.setActiveVideo,
                 setPlayingActiveVideo: this.setPlayingActiveVideo,
-                toggleModalCreate: this.toggleModalCreate
+                toggleModalCreate: this.toggleModalCreate,
+                toggleModalRemove: this.toggleModalRemove
             }
         };
 
         const { mainVideo, modalCreateInfo } = this.state;
-
-        console.log('state', modalCreateInfo);
 
         return (
             <Provider value={contextValue}>
@@ -193,9 +217,17 @@ export class App extends Component {
                     <ModalCreate
                         addClip={this.addClip}
                         addMainVideo={this.addMainVideo}
+                        editVideo={this.editVideo}
                         mainVideo={mainVideo}
                         modalCreateInfo={modalCreateInfo}
                         toggle={this.toggleModalCreate}
+                    />
+                    <ModalConfirmation
+                        action={this.removeVideo}
+                        content="Are you sure?"
+                        title="You'll remove this clip"
+                        toggle={this.toggleModalRemove}
+                        visible={this.state.modalConfirmationInfo.visible}
                     />
                 </div>
             </Provider>

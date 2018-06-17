@@ -31,6 +31,7 @@ const VideoItem = (props) => {
         active,
         edit,
         isClip,
+        remove,
         setActiveVideo,
         video
     } = props;
@@ -84,7 +85,7 @@ const VideoItem = (props) => {
                 {
                     isClip && (
                         <Tooltip title="Remove">
-                            <RemoveIcon />
+                            <RemoveIcon onClick={remove} />
                         </Tooltip>
                     )
                 }
@@ -97,13 +98,15 @@ VideoItem.propTypes = {
     active: PropTypes.bool,
     edit: PropTypes.func.isRequired,
     isClip: PropTypes.bool,
+    remove: PropTypes.func,
     setActiveVideo: PropTypes.func.isRequired,
     video: PropTypes.object.isRequired
 };
 
 VideoItem.defaultProps = {
     active: false,
-    isClip: true
+    isClip: true,
+    remove: () => {}
 };
 
 export default VideoItem;

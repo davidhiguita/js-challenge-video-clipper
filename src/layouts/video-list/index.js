@@ -18,6 +18,7 @@ const VideoList = () => {
                 active={activeVideo.id === video.id}
                 edit={() => globalHandle.toggleModalCreate('clip', 'edit', video)}
                 key={index}
+                remove={() => globalHandle.toggleModalRemove(video.id)}
                 setActiveVideo={globalHandle.setActiveVideo}
                 video={video}
             />
