@@ -58,8 +58,6 @@ export class App extends Component {
             clips.filter(video => video.id === id)[0] :
             mainVideo;
 
-        console.log('setActiveVideo', id, isClip);
-
         this.setState({
             activeVideo: newActiveVideo,
             disabledControls: this.setDisabledControls(newActiveVideo)
@@ -78,25 +76,24 @@ export class App extends Component {
     }
 
     playVideo = (type = 'previous') => {
-        const { activeVideo, videos } = this.state;
-        const numberOfVideos = videos.length;
-        const currentActiveVideoIndex = videos.findIndex(video => video.id === activeVideo.id);
+        const { activeVideo, clips } = this.state;
+        const numberOfClips = clips.length;
+        const currentActiveVideoIndex = clips.findIndex(video => video.id === activeVideo.id);
         let newActiveVideoIndex = currentActiveVideoIndex;
-        if (type === 'next' && currentActiveVideoIndex < numberOfVideos - 1) {
+        if (type === 'next' && currentActiveVideoIndex < numberOfClips - 1) {
             newActiveVideoIndex += 1;
         } else if (currentActiveVideoIndex > 0) {
             newActiveVideoIndex -= 1;
         }
         this.setState({
-            activeVideo: videos[newActiveVideoIndex],
-            disabledControls: this.setDisabledControls(videos[newActiveVideoIndex])
+            activeVideo: clips[newActiveVideoIndex],
+            disabledControls: this.setDisabledControls(clips[newActiveVideoIndex])
         });
     }
 
     addClip = (video, callback) => {
         const newClip = { ...video };
         newClip.id = this.state.clips.length;
-        console.log('addClip', newClip);
         this.setState(prevState => ({
             clips: [
                 ...prevState.clips,
@@ -107,7 +104,6 @@ export class App extends Component {
     }
 
     addMainVideo = (video, callback) => {
-        console.log('addMainVideo', video);
         this.setState({
             activeVideo: video,
             clips: [],
