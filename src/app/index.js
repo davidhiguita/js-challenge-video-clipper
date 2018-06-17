@@ -318,8 +318,6 @@ export class App extends Component {
 
         const { mainVideo, modalCreateInfo } = this.state;
 
-        console.log('>>>>', this.state.validFieldsModalCreate);
-
         return (
             <Provider value={contextValue}>
                 <div className="video-clipper">
