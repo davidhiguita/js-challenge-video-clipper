@@ -14,13 +14,13 @@ import VideoForm from './video-form';
 import './style.scss';
 
 const initialState = {
-    duration: '',
+    duration: '00:15:53',
     end: '',
     isFromYoutube: false,
-    name: '',
+    name: 'My Clip',
     start: '',
     type: 'clip',
-    url: ''
+    url: 'LoEYi2qQWQQ'
 };
 
 class ModalCreate extends Component {
@@ -34,6 +34,7 @@ class ModalCreate extends Component {
         } = this.props;
 
         const {
+            duration,
             end,
             isFromYoutube,
             name,
@@ -43,11 +44,9 @@ class ModalCreate extends Component {
         } = this.state;
 
         if (type === 'clip') {
-            let formattedUrl = `${mainVideo.url}?start=${start}&end=${end}`;
-
-            if (!mainVideo.isFromYoutube) {
-                formattedUrl = `${mainVideo.url}#t=${start},${end}`;
-            }
+            const formattedUrl = mainVideo.isFromYoutube
+                ? `${mainVideo.url}?start=${start}&end=${end}`
+                : `${mainVideo.url}#t=${start},${end}`;
 
             const newVideo = {
                 end,
@@ -55,18 +54,19 @@ class ModalCreate extends Component {
                 name,
                 start,
                 tags: [],
+                type,
                 url: formattedUrl
             };
 
             addClip(newVideo, this.resetStates);
         } else if (type === 'video') {
             const newVideo = {
-                end,
+                duration,
                 isFromYoutube,
                 name,
-                start,
                 tags: [],
-                url
+                type,
+                url: isFromYoutube ? `https://www.youtube.com/embed/${url}` : url
             };
 
             addMainVideo(newVideo, this.resetStates);

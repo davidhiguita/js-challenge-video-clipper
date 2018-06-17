@@ -28,8 +28,8 @@ const choosePlayIcon = (isClip, video, action) => {
 const VideoItem = (props) => {
     const {
         active,
-        actions,
         isClip,
+        setActiveVideo,
         video
     } = props;
 
@@ -47,14 +47,23 @@ const VideoItem = (props) => {
                         choosePlayIcon(
                             isClip,
                             video,
-                            () => actions.setActiveVideo(video.id, isClip)
+                            () => setActiveVideo(video.id, isClip)
                         )
                     }
                 </IconButton>
             </div>
 
-            <div className="video-clipper__list--item__name" onClick={() => actions.setActiveVideo(video.id, isClip)}>
-                {video.name}
+            <div className="video-clipper__list--item__info">
+                <div
+                    className="video-clipper__list--item__info__name"
+                    onClick={() => setActiveVideo(video.id, isClip)}
+                >
+                    {video.name}
+                </div>
+
+                <div className="video-clipper__list--item__info__duration">
+                    {isClip ? `${video.start} - ${video.end}` : video.duration}
+                </div>
             </div>
 
             <div className="video-clipper__list--item__actions">
@@ -84,8 +93,8 @@ const VideoItem = (props) => {
 
 VideoItem.propTypes = {
     active: PropTypes.bool,
-    actions: PropTypes.object.isRequired,
     isClip: PropTypes.bool,
+    setActiveVideo: PropTypes.func.isRequired,
     video: PropTypes.object.isRequired
 };
 

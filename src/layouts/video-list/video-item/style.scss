@@ -15,8 +15,10 @@ $color-main: #673AB7;
                     fill: $color-active;
                 }
             }
-            &__name {
-                color: $color-active;
+            &__info {
+                &__name {
+                    color: $color-active;
+                }
             }
             &__actions {
                 g {
@@ -35,8 +37,10 @@ $color-main: #673AB7;
                     fill: $color-main;
                 }
             }
-            &__name {
-                color: $color-main;
+            &__info {
+                &__name {
+                    color: $color-main;
+                }
             }
             &__actions {
                 g {
@@ -55,12 +59,20 @@ $color-main: #673AB7;
         }
     }
 
-    &__name {
-        align-items: center;
+    &__info {
+        align-items: flex-start;
         cursor: pointer;
         display: flex;
+        flex-direction: column;
         font-weight: bold;
         grid-column: 3 / span 7;
+        justify-content: flex-end;
+
+        &__duration {
+            color: gray;
+            font-size: 0.85rem;
+            font-weight: normal;
+        }
     }
 
     &__actions {

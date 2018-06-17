@@ -17,7 +17,7 @@ const VideoList = () => {
             <VideoItem
                 active={activeVideo.id === video.id}
                 key={index}
-                actions={globalHandle}
+                setActiveVideo={globalHandle.setActiveVideo}
                 video={video}
             />
         ));
@@ -30,7 +30,7 @@ const VideoList = () => {
 
     const renderMainVideo = (activeVideo, globalHandle, mainVideo) => (
         <VideoItem
-            actions={globalHandle}
+            setActiveVideo={globalHandle.setActiveVideo}
             isClip={false}
             video={mainVideo}
         />

@@ -58,6 +58,8 @@ export class App extends Component {
             clips.filter(video => video.id === id)[0] :
             mainVideo;
 
+        console.log('setActiveVideo', id, isClip);
+
         this.setState({
             activeVideo: newActiveVideo,
             disabledControls: this.setDisabledControls(newActiveVideo)
@@ -92,12 +94,13 @@ export class App extends Component {
     }
 
     addClip = (video, callback) => {
-        console.log('addClip', video);
+        const newClip = { ...video };
+        newClip.id = this.state.clips.length;
+        console.log('addClip', newClip);
         this.setState(prevState => ({
-            activeVideo: video,
             clips: [
                 ...prevState.clips,
-                video
+                newClip
             ],
             visibleModalCreate: false
         }), () => callback());

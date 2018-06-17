@@ -126,7 +126,7 @@ const VideoForm = (props) => {
                         className={classes.url}
                         fullWidth
                         id="video-url"
-                        label="Url"
+                        label={isFromYoutube ? 'Video Id' : 'Url'}
                         margin="normal"
                         onChange={handleChange('url')}
                         value={url}
