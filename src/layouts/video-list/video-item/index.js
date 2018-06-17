@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import IconButton from '@material-ui/core/IconButton';
 import TagIcon from '@material-ui/icons/Loyalty';
 import EditIcon from '@material-ui/icons/Create';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import RemoveIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
 import PlayIcon from '@material-ui/icons/PlayCircleFilled';
@@ -28,6 +29,7 @@ const choosePlayIcon = (isClip, video, action) => {
 const VideoItem = (props) => {
     const {
         active,
+        edit,
         isClip,
         setActiveVideo,
         video
@@ -72,12 +74,20 @@ const VideoItem = (props) => {
                         <TagIcon />
                     </Tooltip>
                 )}
-                <Tooltip title="Edit">
-                    <EditIcon />
+                <Tooltip title={isClip ? 'Edit' : 'Refresh'}>
+                    {
+                        isClip ?
+                            <EditIcon onClick={edit} /> :
+                            <RefreshIcon onClick={edit} />
+                    }
                 </Tooltip>
-                <Tooltip title="Remove">
-                    <RemoveIcon />
-                </Tooltip>
+                {
+                    isClip && (
+                        <Tooltip title="Remove">
+                            <RemoveIcon />
+                        </Tooltip>
+                    )
+                }
             </div>
         </Paper>
     );
@@ -85,6 +95,7 @@ const VideoItem = (props) => {
 
 VideoItem.propTypes = {
     active: PropTypes.bool,
+    edit: PropTypes.func.isRequired,
     isClip: PropTypes.bool,
     setActiveVideo: PropTypes.func.isRequired,
     video: PropTypes.object.isRequired

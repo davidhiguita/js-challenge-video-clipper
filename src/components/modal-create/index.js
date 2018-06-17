@@ -33,9 +33,11 @@ class ModalCreate extends Component {
 
     render() {
         const {
-            modalCreateInfo: { visible },
+            modalCreateInfo: { actionType, type, visible },
             toggle
         } = this.props;
+
+        const title = `${actionType === 'add' ? `${type === 'clip' ? 'Add new' : 'Update'}` : 'Edit'} ${type === 'clip' ? 'Clip' : 'Main Video'}`;
 
         return (
             <Consumer>
@@ -52,7 +54,7 @@ class ModalCreate extends Component {
                             aria-labelledby="simple-dialog-title"
                         >
                             <DialogTitle id="simple-dialog-title">
-                                Add clip or video
+                                {title}
                             </DialogTitle>
                             <DialogContent className="modal-create-video__content">
                                 <VideoForm

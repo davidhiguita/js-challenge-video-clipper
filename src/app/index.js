@@ -16,13 +16,14 @@ import { mainVideo } from '../data';
 import './style.scss';
 
 const modalCreateInitialState = {
-    duration: '00:15:53',
-    end: '00:00:15',
+    actionType: 'add',
+    duration: '',
+    end: '',
     isFromYoutube: false,
-    name: 'My Clip',
-    start: '00:00:10',
+    name: '',
+    start: '',
     type: 'video',
-    url: 'LoEYi2qQWQQ',
+    url: '',
     visible: false
 };
 
@@ -80,8 +81,46 @@ export class App extends Component {
         this.setState({ activeVideo: currentActiveVideo });
     }
 
-    editClip = () => {
-        console.log('editClip::', this.state.modalCreateInfo);
+    addClip = () => {
+        const { mainVideo } = this.state;
+        const newClip = { ...this.state.modalCreateInfo };
+        delete newClip.actionType;
+        delete newClip.visible;
+        const formattedUrl = mainVideo.isFromYoutube
+            ? `${mainVideo.url}?start=${newClip.start}&end=${newClip.end}`
+            : `${mainVideo.url}#t=${newClip.start},${newClip.end}`;
+        newClip.id = this.state.clips.length;
+        newClip.url = formattedUrl;
+
+        this.setState(prevState => ({
+            clips: [
+                ...prevState.clips,
+                newClip
+            ],
+            modalCreateInfo: modalCreateInitialState
+        }));
+    }
+
+    addMainVideo = () => {
+        const newVideo = { ...this.state.modalCreateInfo };
+        delete newVideo.actionType;
+        delete newVideo.visible;
+        const formattedUrl =
+            newVideo.isFromYoutube ?
+                `https://www.youtube.com/embed/${newVideo.url}` :
+                newVideo.url;
+        newVideo.url = formattedUrl;
+        this.setState({
+            activeVideo: newVideo,
+            clips: [],
+            mainVideo: newVideo,
+            modalCreateInfo: modalCreateInitialState
+        });
+    }
+
+    editVideo = () => {
+        console.log('editVideo::', this.state.modalCreateInfo);
+        this.toggleModalCreate();
     }
 
     handleModalCreateChange = (name, isCheckbox = false) => (event) => {
@@ -93,10 +132,20 @@ export class App extends Component {
 
     resetModalCreateState = () => this.setState({ modalCreateInfo: modalCreateInitialState })
 
-    toggleModalCreate = () => {
-        const currentModalInfo = { ...this.state.modalCreateInfo };
+    toggleModalCreate = (typeVideo, typeOpen, video = null) => {
+        const selectedvideo = video ? { ...video } : modalCreateInitialState;
+        if (!video) {
+            delete selectedvideo.actionType;
+            delete selectedvideo.visible;
+        }
+        const currentModalInfo = {
+            ...this.state.modalCreateInfo,
+            ...selectedvideo
+        };
+        currentModalInfo.actionType = typeOpen;
+        currentModalInfo.type = typeVideo;
         currentModalInfo.visible = !currentModalInfo.visible;
-        console.log('toggleModalCreate', currentModalInfo);
+        console.log('TOGGLE>>', currentModalInfo);
         this.setState({ modalCreateInfo: currentModalInfo });
     }
 
@@ -116,46 +165,11 @@ export class App extends Component {
         });
     }
 
-    addClip = () => {
-        const { mainVideo } = this.state;
-        const newClip = { ...this.state.modalCreateInfo };
-        delete newClip.visible;
-        const formattedUrl = mainVideo.isFromYoutube
-            ? `${mainVideo.url}?start=${newClip.start}&end=${newClip.end}`
-            : `${mainVideo.url}#t=${newClip.start},${newClip.end}`;
-        newClip.id = this.state.clips.length;
-        newClip.url = formattedUrl;
-
-        this.setState(prevState => ({
-            clips: [
-                ...prevState.clips,
-                newClip
-            ],
-            modalCreateInfo: modalCreateInitialState
-        }));
-    }
-
-    addMainVideo = (video) => {
-        const newVideo = { ...this.state.modalCreateInfo };
-        delete newVideo.visible;
-        const formattedUrl =
-            newVideo.isFromYoutube ?
-                `https://www.youtube.com/embed/${newVideo.url}` :
-                newVideo.url;
-        newVideo.url = formattedUrl;
-        this.setState({
-            activeVideo: video,
-            clips: [],
-            mainVideo: video,
-            modalCreateInfo: modalCreateInitialState
-        });
-    }
-
     render() {
         const contextValue = {
             globalData: this.state,
             globalHandle: {
-                editClip: this.editClip,
+                editVideo: this.editVideo,
                 handleModalCreateChange: this.handleModalCreateChange,
                 playVideo: this.playVideo,
                 setActiveVideo: this.setActiveVideo,

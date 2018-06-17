@@ -16,7 +16,7 @@ const VideoList = () => {
         clips.map((video, index) => (
             <VideoItem
                 active={activeVideo.id === video.id}
-                // editClip={}
+                edit={() => globalHandle.toggleModalCreate('clip', 'edit', video)}
                 key={index}
                 setActiveVideo={globalHandle.setActiveVideo}
                 video={video}
@@ -31,6 +31,7 @@ const VideoList = () => {
 
     const renderMainVideo = (activeVideo, globalHandle, mainVideo) => (
         <VideoItem
+            edit={() => globalHandle.toggleModalCreate('video', 'edit', activeVideo)}
             setActiveVideo={globalHandle.setActiveVideo}
             isClip={false}
             video={mainVideo}
@@ -52,7 +53,7 @@ const VideoList = () => {
                     <Paper elevation={4}>
                         <ActionsBar
                             disabledControls={disabledControls}
-                            openModalCreate={globalHandle.toggleModalCreate}
+                            openModalCreate={() => globalHandle.toggleModalCreate('clip', 'add')}
                             playVideo={globalHandle.playVideo}
                         />
                     </Paper>
