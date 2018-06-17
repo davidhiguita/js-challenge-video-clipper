@@ -153,8 +153,18 @@ export class App extends Component {
     handleModalCreateChange = (name, isCheckbox = false) => (event) => {
         const newValue = isCheckbox ? event.target.checked : event.target.value;
         const currentModalInfo = { ...this.state.modalCreateInfo };
-        currentModalInfo[name] = newValue;
-        this.setState({ modalCreateInfo: currentModalInfo });
+
+        const durationFields = ['duration', 'end', 'start'];
+
+        if (durationFields.includes(name)) {
+            if (this.validateDurationFormat(newValue)) {
+                currentModalInfo[name] = newValue;
+                this.setState({ modalCreateInfo: currentModalInfo });
+            }
+        } else {
+            currentModalInfo[name] = newValue;
+            this.setState({ modalCreateInfo: currentModalInfo });
+        }
     }
 
     removeVideo = () => {
@@ -168,8 +178,6 @@ export class App extends Component {
             modalConfirmationInfo: { id: null, visible: false }
         });
     }
-
-    resetModalCreateState = () => this.setState({ modalCreateInfo: { ...modalCreateInitialState } })
 
     toggleModalCreate = (typeVideo, typeOpen, video = null) => {
         if (this.state.modalCreateInfo.visible) {
@@ -216,6 +224,85 @@ export class App extends Component {
         });
     }
 
+    validateDurationFormat = (value) => {
+        const re = {
+            1: /^[0-2]{1}$/g,
+            2: {
+                a: /^[0-1]{1}\d{1}$/g,
+                b: /^2[0-3]{1}$/g
+            },
+            3: /^\d{2}:$/g,
+            '4_5': /^\d{2}:[0-5]{1}\d?$/g,
+            6: /^\d{2}:\d{2}:$/g,
+            '7_8': /^\d{2}:\d{2}:[0-5]{1}\d?$/g
+        };
+
+        let isValid;
+        const valueLength = value.length;
+
+        switch (valueLength) {
+            case 0:
+                isValid = true;
+                break;
+            case 1:
+                isValid = re[1].test(value);
+                break;
+            case 2:
+                isValid = re[2].a.test(value) || re[2].b.test(value);
+                break;
+            case 3:
+                isValid = re[3].test(value);
+                break;
+            case 4:
+                isValid = re['4_5'].test(value);
+                break;
+            case 5:
+                isValid = re['4_5'].test(value);
+                break;
+            case 6:
+                isValid = re[6].test(value);
+                break;
+            case 7:
+            case 8:
+                isValid = re['7_8'].test(value);
+                break;
+            default:
+                break;
+        }
+        return isValid;
+    };
+
+    validateForm = () => {
+        const {
+            duration,
+            end,
+            isFromYoutube,
+            name,
+            start,
+            type,
+            url
+        } = this.state.modalCreateInfo;
+        let isValid;
+        if (type === 'clip') {
+            isValid =
+                (start.length === 8) &&
+                (end.length === 8) &&
+                (!!name.length);
+        } else {
+            let validUrl;
+            if (isFromYoutube) {
+                validUrl = !/^https:\/\/*/g.test(url);
+            } else {
+                validUrl = /^https:\/\/*/g.test(url);
+            }
+            isValid =
+                (duration.length === 8) &&
+                (!!name.length) &&
+                validUrl;
+        }
+        return isValid;
+    }
+
     render() {
         const contextValue = {
             globalData: this.state,
@@ -231,7 +318,7 @@ export class App extends Component {
 
         const { mainVideo, modalCreateInfo } = this.state;
 
-        console.log('clips>>', this.state.clips);
+        console.log('>>>>', this.state.validFieldsModalCreate);
 
         return (
             <Provider value={contextValue}>
@@ -245,6 +332,7 @@ export class App extends Component {
                         mainVideo={mainVideo}
                         modalCreateInfo={modalCreateInfo}
                         toggle={this.toggleModalCreate}
+                        validForm={this.validateForm()}
                     />
                     <ModalConfirmation
                         action={this.removeVideo}

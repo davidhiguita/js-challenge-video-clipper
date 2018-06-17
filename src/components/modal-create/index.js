@@ -35,7 +35,8 @@ class ModalCreate extends Component {
         const {
             editVideo,
             modalCreateInfo: { actionType, type, visible },
-            toggle
+            toggle,
+            validForm
         } = this.props;
 
         const title = `${actionType === 'add' ? `${type === 'clip' ? 'Add new' : 'Update'}` : 'Edit'} ${type === 'clip' ? 'Clip' : 'Main Video'}`;
@@ -69,7 +70,12 @@ class ModalCreate extends Component {
                                 <Button onClick={toggle} color="primary">
                                     Close
                                 </Button>
-                                <Button onClick={filteredAction} color="primary" autoFocus>
+                                <Button
+                                    autoFocus
+                                    color="primary"
+                                    disabled={!validForm}
+                                    onClick={filteredAction}
+                                >
                                     Agree
                                 </Button>
                             </DialogActions>
@@ -86,7 +92,8 @@ ModalCreate.propTypes = {
     addMainVideo: PropTypes.func.isRequired,
     editVideo: PropTypes.func.isRequired,
     modalCreateInfo: PropTypes.object.isRequired,
-    toggle: PropTypes.func.isRequired
+    toggle: PropTypes.func.isRequired,
+    validForm: PropTypes.bool.isRequired
 };
 
 export default ModalCreate;
