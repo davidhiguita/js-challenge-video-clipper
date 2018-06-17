@@ -133,20 +133,23 @@ export class App extends Component {
     resetModalCreateState = () => this.setState({ modalCreateInfo: modalCreateInitialState })
 
     toggleModalCreate = (typeVideo, typeOpen, video = null) => {
-        const selectedvideo = video ? { ...video } : modalCreateInitialState;
-        if (!video) {
-            delete selectedvideo.actionType;
-            delete selectedvideo.visible;
+        if (this.state.modalCreateInfo.visible) {
+            this.setState({ modalCreateInfo: modalCreateInitialState });
+        } else {
+            const selectedvideo = video ? { ...video } : modalCreateInitialState;
+            if (!video) {
+                delete selectedvideo.actionType;
+                delete selectedvideo.visible;
+            }
+            const currentModalInfo = {
+                ...this.state.modalCreateInfo,
+                ...selectedvideo
+            };
+            currentModalInfo.actionType = typeOpen;
+            currentModalInfo.type = typeVideo;
+            currentModalInfo.visible = !currentModalInfo.visible;
+            this.setState({ modalCreateInfo: currentModalInfo });
         }
-        const currentModalInfo = {
-            ...this.state.modalCreateInfo,
-            ...selectedvideo
-        };
-        currentModalInfo.actionType = typeOpen;
-        currentModalInfo.type = typeVideo;
-        currentModalInfo.visible = !currentModalInfo.visible;
-        console.log('TOGGLE>>', currentModalInfo);
-        this.setState({ modalCreateInfo: currentModalInfo });
     }
 
     playVideo = (type = 'previous') => {
@@ -179,6 +182,8 @@ export class App extends Component {
         };
 
         const { mainVideo, modalCreateInfo } = this.state;
+
+        console.log('state', modalCreateInfo);
 
         return (
             <Provider value={contextValue}>
