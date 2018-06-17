@@ -16,6 +16,7 @@ const VideoList = () => {
         clips.map((video, index) => (
             <VideoItem
                 active={activeVideo.id === video.id}
+                // editClip={}
                 key={index}
                 setActiveVideo={globalHandle.setActiveVideo}
                 video={video}

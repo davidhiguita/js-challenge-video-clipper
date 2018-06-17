@@ -40,7 +40,7 @@ class Player extends Component {
         return (
             <video
                 autoPlay={activeVideo.type === 'clip'}
-                controls={activeVideo.type === 'main'}
+                controls
                 ref={(video) => {
                     this.videoRef = video;
                 }}

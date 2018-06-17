@@ -21,7 +21,7 @@ const ActionsBar = ({ disabledControls, openModalCreate, playVideo }) => (
             <PreviousIcon />
         </IconButton>
 
-        <Tooltip title="Create a clip or set video">
+        <Tooltip title="Create a new clip">
             <IconButton onClick={openModalCreate}>
                 <AddIcon />
             </IconButton>

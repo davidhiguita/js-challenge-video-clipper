@@ -15,6 +15,17 @@ import { mainVideo } from '../data';
 
 import './style.scss';
 
+const modalCreateInitialState = {
+    duration: '00:15:53',
+    end: '00:00:15',
+    isFromYoutube: false,
+    name: 'My Clip',
+    start: '00:00:10',
+    type: 'video',
+    url: 'LoEYi2qQWQQ',
+    visible: false
+};
+
 export class App extends Component {
     state = {
         activeVideo: mainVideo,
@@ -24,7 +35,7 @@ export class App extends Component {
             previous: true
         },
         mainVideo,
-        visibleModalCreate: false
+        modalCreateInfo: modalCreateInitialState
     }
 
     setDisabledControls = (activeVideo) => {
@@ -69,10 +80,24 @@ export class App extends Component {
         this.setState({ activeVideo: currentActiveVideo });
     }
 
+    editClip = () => {
+        console.log('editClip::', this.state.modalCreateInfo);
+    }
+
+    handleModalCreateChange = (name, isCheckbox = false) => (event) => {
+        const newValue = isCheckbox ? event.target.checked : event.target.value;
+        const currentModalInfo = { ...this.state.modalCreateInfo };
+        currentModalInfo[name] = newValue;
+        this.setState({ modalCreateInfo: currentModalInfo });
+    }
+
+    resetModalCreateState = () => this.setState({ modalCreateInfo: modalCreateInitialState })
+
     toggleModalCreate = () => {
-        this.setState(prevState => ({
-            visibleModalCreate: !prevState.visibleModalCreate
-        }));
+        const currentModalInfo = { ...this.state.modalCreateInfo };
+        currentModalInfo.visible = !currentModalInfo.visible;
+        console.log('toggleModalCreate', currentModalInfo);
+        this.setState({ modalCreateInfo: currentModalInfo });
     }
 
     playVideo = (type = 'previous') => {
@@ -91,31 +116,47 @@ export class App extends Component {
         });
     }
 
-    addClip = (video, callback) => {
-        const newClip = { ...video };
+    addClip = () => {
+        const { mainVideo } = this.state;
+        const newClip = { ...this.state.modalCreateInfo };
+        delete newClip.visible;
+        const formattedUrl = mainVideo.isFromYoutube
+            ? `${mainVideo.url}?start=${newClip.start}&end=${newClip.end}`
+            : `${mainVideo.url}#t=${newClip.start},${newClip.end}`;
         newClip.id = this.state.clips.length;
+        newClip.url = formattedUrl;
+
         this.setState(prevState => ({
             clips: [
                 ...prevState.clips,
                 newClip
             ],
-            visibleModalCreate: false
-        }), () => callback());
+            modalCreateInfo: modalCreateInitialState
+        }));
     }
 
-    addMainVideo = (video, callback) => {
+    addMainVideo = (video) => {
+        const newVideo = { ...this.state.modalCreateInfo };
+        delete newVideo.visible;
+        const formattedUrl =
+            newVideo.isFromYoutube ?
+                `https://www.youtube.com/embed/${newVideo.url}` :
+                newVideo.url;
+        newVideo.url = formattedUrl;
         this.setState({
             activeVideo: video,
             clips: [],
             mainVideo: video,
-            visibleModalCreate: false
-        }, () => callback());
+            modalCreateInfo: modalCreateInitialState
+        });
     }
 
     render() {
         const contextValue = {
             globalData: this.state,
             globalHandle: {
+                editClip: this.editClip,
+                handleModalCreateChange: this.handleModalCreateChange,
                 playVideo: this.playVideo,
                 setActiveVideo: this.setActiveVideo,
                 setPlayingActiveVideo: this.setPlayingActiveVideo,
@@ -123,7 +164,7 @@ export class App extends Component {
             }
         };
 
-        const { mainVideo, visibleModalCreate } = this.state;
+        const { mainVideo, modalCreateInfo } = this.state;
 
         return (
             <Provider value={contextValue}>
@@ -134,8 +175,8 @@ export class App extends Component {
                         addClip={this.addClip}
                         addMainVideo={this.addMainVideo}
                         mainVideo={mainVideo}
+                        modalCreateInfo={modalCreateInfo}
                         toggle={this.toggleModalCreate}
-                        visible={visibleModalCreate}
                     />
                 </div>
             </Provider>

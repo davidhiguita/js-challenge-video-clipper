@@ -7,26 +7,21 @@
                     display: grid;
                     grid-template-columns: repeat(6, 1fr);
                     grid-gap: 10px;
-
-                    &__type {
-                        grid-column: 1 / span 2;
-                        margin-top: 7px;
-                    }
                 }
 
                 &__clip {
                     &--start {
-                        grid-column: 3 / span 2;
+                        grid-column: 1 / span 3;
                     }
 
                     &--end {
-                        grid-column: 5 / span 2;
+                        grid-column: 4 / span 3;
                     }
                 }
 
                 &__video {
                     &__duration {
-                        grid-column: 3 / span 2;
+                        grid-column: 1 / span 2;
                     }
                     &__isyoutube {
                         grid-column: 5 / span 2;

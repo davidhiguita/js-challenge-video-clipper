@@ -67,25 +67,17 @@ const VideoItem = (props) => {
             </div>
 
             <div className="video-clipper__list--item__actions">
-                { !!video.tags.length && (
+                { video.tags && !!video.tags.length && (
                     <Tooltip title={`${video.tags.length} tags`}>
                         <TagIcon />
                     </Tooltip>
                 )}
-                {
-                    isClip && (
-                        <Tooltip title="Edit">
-                            <EditIcon />
-                        </Tooltip>
-                    )
-                }
-                {
-                    isClip && (
-                        <Tooltip title="Remove">
-                            <RemoveIcon />
-                        </Tooltip>
-                    )
-                }
+                <Tooltip title="Edit">
+                    <EditIcon />
+                </Tooltip>
+                <Tooltip title="Remove">
+                    <RemoveIcon />
+                </Tooltip>
             </div>
         </Paper>
     );
