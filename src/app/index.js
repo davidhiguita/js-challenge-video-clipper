@@ -91,24 +91,26 @@ export class App extends Component {
         });
     }
 
-    addVideo = (video, callback, isClip = true) => {
-        const newVideo = { ...video };
-        if (isClip) {
-            newVideo.id = this.state.clips.length;
-            this.setState(prevState => ({
-                clips: [
-                    ...prevState,
-                    newVideo
-                ],
-                visibleModalCreate: false
-            }), () => callback());
-        } else {
-            this.setState({
-                activeVideo: newVideo,
-                mainVideo: newVideo,
-                visibleModalCreate: false
-            }, () => callback());
-        }
+    addClip = (video, callback) => {
+        console.log('addClip', video);
+        this.setState(prevState => ({
+            activeVideo: video,
+            clips: [
+                ...prevState.clips,
+                video
+            ],
+            visibleModalCreate: false
+        }), () => callback());
+    }
+
+    addMainVideo = (video, callback) => {
+        console.log('addMainVideo', video);
+        this.setState({
+            activeVideo: video,
+            clips: [],
+            mainVideo: video,
+            visibleModalCreate: false
+        }, () => callback());
     }
 
     render() {
@@ -122,7 +124,7 @@ export class App extends Component {
             }
         };
 
-        const { visibleModalCreate } = this.state;
+        const { mainVideo, visibleModalCreate } = this.state;
 
         return (
             <Provider value={contextValue}>
@@ -130,7 +132,9 @@ export class App extends Component {
                     <Player />
                     <VideoList />
                     <ModalCreate
-                        addVideo={this.addVideo}
+                        addClip={this.addClip}
+                        addMainVideo={this.addMainVideo}
+                        mainVideo={mainVideo}
                         toggle={this.toggleModalCreate}
                         visible={visibleModalCreate}
                     />

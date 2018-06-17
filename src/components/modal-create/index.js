@@ -15,8 +15,10 @@ import './style.scss';
 
 const initialState = {
     duration: '',
+    end: '',
     isFromYoutube: false,
     name: '',
+    start: '',
     type: 'clip',
     url: ''
 };
@@ -25,28 +27,50 @@ class ModalCreate extends Component {
     state = initialState
 
     addVideo = () => {
-        const { addVideo } = this.props;
+        const {
+            addClip,
+            addMainVideo,
+            mainVideo
+        } = this.props;
 
         const {
-            duration,
+            end,
             isFromYoutube,
             name,
+            start,
             type,
             url
         } = this.state;
 
-        const newVideo = {
-            duration,
-            name,
-            url,
-            isFromYoutube,
-            tags: []
-        };
-        addVideo(
-            newVideo,
-            this.resetStates,
-            type === 'clip'
-        );
+        if (type === 'clip') {
+            let formattedUrl = `${mainVideo.url}?start=${start}&end=${end}`;
+
+            if (!mainVideo.isFromYoutube) {
+                formattedUrl = `${mainVideo.url}#t=${start},${end}`;
+            }
+
+            const newVideo = {
+                end,
+                isFromYoutube,
+                name,
+                start,
+                tags: [],
+                url: formattedUrl
+            };
+
+            addClip(newVideo, this.resetStates);
+        } else if (type === 'video') {
+            const newVideo = {
+                end,
+                isFromYoutube,
+                name,
+                start,
+                tags: [],
+                url
+            };
+
+            addMainVideo(newVideo, this.resetStates);
+        }
     };
 
     handleChange = (name, isCheckbox = false) => (event) => {
@@ -65,8 +89,10 @@ class ModalCreate extends Component {
 
         const {
             duration,
+            end,
             isFromYoutube,
             name,
+            start,
             type,
             url
         } = this.state;
@@ -85,9 +111,11 @@ class ModalCreate extends Component {
                 <DialogContent className="modal-create-video__content">
                     <VideoForm
                         duration={duration}
+                        end={end}
                         isFromYoutube={isFromYoutube}
                         name={name}
                         url={url}
+                        start={start}
                         type={type}
                         handleChange={this.handleChange}
                     />
@@ -106,7 +134,9 @@ class ModalCreate extends Component {
 }
 
 ModalCreate.propTypes = {
-    addVideo: PropTypes.func.isRequired,
+    addClip: PropTypes.func.isRequired,
+    addMainVideo: PropTypes.func.isRequired,
+    mainVideo: PropTypes.object.isRequired,
     toggle: PropTypes.func.isRequired,
     visible: PropTypes.bool
 };

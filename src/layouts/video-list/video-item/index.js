@@ -53,7 +53,7 @@ const VideoItem = (props) => {
                 </IconButton>
             </div>
 
-            <div className="video-clipper__list--item__name" onClick={() => actions.setActiveVideo(video.id)}>
+            <div className="video-clipper__list--item__name" onClick={() => actions.setActiveVideo(video.id, isClip)}>
                 {video.name}
             </div>
 
