@@ -3,6 +3,8 @@
 
 This app allow you load a video from youtube (using the id) or adding a url where is video uploaded. Next images will show you some instructions to use this app.
 
+To save data of this app (I don't use any permanent storage like LocalStorage). I'm using [React Api Context](https://reactjs.org/docs/context.html) to save data (clips and main video). For styles I used [material-ui](https://material-ui.com/).
+
 ![App init](screenshots/0-ch-init.png)
 ![Playing default video](screenshots/1-ch-init-playing.png)
 
