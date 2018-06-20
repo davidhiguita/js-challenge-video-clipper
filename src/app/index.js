@@ -36,6 +36,7 @@ export class App extends Component {
             next: true,
             previous: true
         },
+        isPlayingVideo: false,
         mainVideo,
         modalCreateInfo: { ...modalCreateInitialState },
         modalConfirmationInfo: {
@@ -75,15 +76,18 @@ export class App extends Component {
             clips.filter(video => video.id === id)[0] :
             mainVideo;
 
-        this.setState({
+        this.setState(prevState => ({
             activeVideo: newActiveVideo,
-            disabledControls: this.setDisabledControls(newActiveVideo)
-        });
+            disabledControls: this.setDisabledControls(newActiveVideo),
+            isPlayingVideo: !prevState.isPlayingVideo
+        }));
     }
 
-    setPlayingActiveVideo = () => {
-        const currentActiveVideo = { ...this.state.activeVideo };
-        this.setState({ activeVideo: currentActiveVideo });
+    togglePlayingActiveVideo = () => {
+        console.log(this.state.isPlayingVideo);
+        this.setState(prevState => ({
+            isPlayingVideo: !prevState.isPlayingVideo
+        }));
     }
 
     addClip = () => {
@@ -310,9 +314,9 @@ export class App extends Component {
                 handleModalCreateChange: this.handleModalCreateChange,
                 playVideo: this.playVideo,
                 setActiveVideo: this.setActiveVideo,
-                setPlayingActiveVideo: this.setPlayingActiveVideo,
                 toggleModalCreate: this.toggleModalCreate,
-                toggleModalRemove: this.toggleModalRemove
+                toggleModalRemove: this.toggleModalRemove,
+                togglePlayingActiveVideo: this.togglePlayingActiveVideo
             }
         };
 
@@ -321,7 +325,10 @@ export class App extends Component {
         return (
             <Provider value={contextValue}>
                 <div className="video-clipper">
-                    <Player />
+                    <Player
+                        mainVideo={this.state.mainVideo}
+                        isPlayingVideo={this.state.isPlayingVideo}
+                    />
                     <VideoList />
                     <ModalCreate
                         addClip={this.addClip}

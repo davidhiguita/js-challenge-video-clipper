@@ -10,27 +10,19 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import RemoveIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
 import PlayIcon from '@material-ui/icons/PlayCircleFilled';
+import PauseIcon from '@material-ui/icons/PauseCircleFilled';
 import YoutubeIcon from '@material-ui/icons/PlayCircleOutline';
 import MainVideoIcon from '@material-ui/icons/VideoLibrary';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import './style.scss';
 
-const choosePlayIcon = (isClip, video, action) => {
-    if (isClip) {
-        if (video.isFromYoutube) {
-            return <YoutubeIcon onClick={action} />;
-        }
-        return <PlayIcon onClick={action} />;
-    }
-    return <MainVideoIcon onClick={action} />;
-};
-
 const VideoItem = (props) => {
     const {
         active,
         edit,
         isClip,
+        isPlayingVideo,
         remove,
         setActiveVideo,
         video
@@ -42,14 +34,28 @@ const VideoItem = (props) => {
         { 'video-clipper__list--item--is-main': !isClip },
     );
 
+    const choosePlayIcon = (action) => {
+        if (isClip) {
+            if (video.isFromYoutube) {
+                return <YoutubeIcon onClick={action} />;
+            }
+            if (isPlayingVideo && active) {
+                return <PauseIcon onClick={action} />;
+            }
+            return <PlayIcon onClick={action} />;
+        }
+        if (isPlayingVideo && active) {
+            return <PauseIcon onClick={action} />;
+        }
+        return <MainVideoIcon onClick={action} />;
+    };
+
     return (
         <Paper className={classes} elevation={1}>
             <div className="video-clipper__list--item__play-button">
                 <IconButton>
                     {
                         choosePlayIcon(
-                            isClip,
-                            video,
                             () => setActiveVideo(video.id, isClip)
                         )
                     }
@@ -98,6 +104,7 @@ VideoItem.propTypes = {
     active: PropTypes.bool,
     edit: PropTypes.func.isRequired,
     isClip: PropTypes.bool,
+    isPlayingVideo: PropTypes.bool.isRequired,
     remove: PropTypes.func,
     setActiveVideo: PropTypes.func.isRequired,
     video: PropTypes.object.isRequired

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // @ own components
 import Paper from '@material-ui/core/Paper';
@@ -8,21 +9,24 @@ import { Consumer } from '../../context';
 import './style.scss';
 
 class Player extends Component {
-    state = {
-        // eslint-disable-next-line react/no-unused-state
-        videoRef: null
-    }
+    componentWillReceiveProps(nextProps) {
+        const { mainVideo } = this.props;
 
-    setVideoRef = (ref) => {
-        // eslint-disable-next-line react/no-unused-state
-        this.setState({ videoRef: ref });
+        if (!mainVideo.isFromYoutube) {
+            if (nextProps.isPlayingVideo) {
+                this.videoRef.play();
+            } else {
+                this.videoRef.pause();
+            }
+        }
     }
 
     renderEmptyVideo = () => (
         <div className="video-clipper__player__nodata">No  video selected</div>
     )
 
-    renderPlayer = (activeVideo, mainVideo) => {
+    renderPlayer = (activeVideo) => {
+        const { mainVideo } = this.props;
         if (mainVideo.isFromYoutube) {
             return (
                 <iframe
@@ -40,7 +44,6 @@ class Player extends Component {
         return (
             <video
                 autoPlay={activeVideo.type === 'clip'}
-                controls
                 ref={(video) => {
                     this.videoRef = video;
                 }}
@@ -55,13 +58,13 @@ class Player extends Component {
         return (
             <Consumer>
                 {({
-                    globalData: { activeVideo, mainVideo }
+                    globalData: { activeVideo }
                 }) => (
                     <div className="video-clipper__player">
                         <Paper elevation={4}>
                             {
                                 activeVideo ?
-                                    this.renderPlayer(activeVideo, mainVideo) :
+                                    this.renderPlayer(activeVideo) :
                                     this.renderEmptyVideo()
                             }
                         </Paper>
@@ -72,5 +75,9 @@ class Player extends Component {
     }
 }
 
+Player.propTypes = {
+    mainVideo: PropTypes.object.isRequired,
+    isPlayingVideo: PropTypes.bool.isRequired
+};
 
 export default Player;

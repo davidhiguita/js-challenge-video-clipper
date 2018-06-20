@@ -12,11 +12,12 @@ import ActionsBar from './actions-bar';
 import './style.scss';
 
 const VideoList = () => {
-    const renderClips = (activeVideo, clips, globalHandle) =>
+    const renderClips = (activeVideo, clips, isPlayingVideo, globalHandle) =>
         clips.map((video, index) => (
             <VideoItem
                 active={activeVideo.id === video.id}
                 edit={() => globalHandle.toggleModalCreate('clip', 'edit', video)}
+                isPlayingVideo={isPlayingVideo}
                 key={index}
                 remove={() => globalHandle.toggleModalRemove(video.id)}
                 setActiveVideo={globalHandle.setActiveVideo}
@@ -30,11 +31,13 @@ const VideoList = () => {
         </div>
     );
 
-    const renderMainVideo = (activeVideo, globalHandle, mainVideo) => (
+    const renderMainVideo = (activeVideo, globalHandle, isPlayingVideo, mainVideo) => (
         <VideoItem
+            active={activeVideo.id === mainVideo.id}
             edit={() => globalHandle.toggleModalCreate('video', 'edit', activeVideo)}
             setActiveVideo={globalHandle.setActiveVideo}
             isClip={false}
+            isPlayingVideo={isPlayingVideo}
             video={mainVideo}
         />
     );
@@ -46,6 +49,7 @@ const VideoList = () => {
                     activeVideo,
                     clips,
                     disabledControls,
+                    isPlayingVideo,
                     mainVideo
                 },
                 globalHandle
@@ -62,10 +66,10 @@ const VideoList = () => {
                     <Paper className="video-clipper__controls__list" elevation={4}>
                         {
                             mainVideo ?
-                                renderMainVideo(activeVideo, globalHandle, mainVideo) :
+                                renderMainVideo(activeVideo, globalHandle, isPlayingVideo, mainVideo) :
                                 renderEmptyClipsList()
                         }
-                        { renderClips(activeVideo, clips, globalHandle) }
+                        { renderClips(activeVideo, clips, isPlayingVideo, globalHandle) }
                     </Paper>
                 </div>
             ) }
