@@ -1,0 +1,9 @@
+.video-clipper__list__actions-bar {
+    display: flex;
+    justify-content: center;
+
+    &__buttons {
+        background-color: orange;
+        border-radius: 20px;
+    }
+}
