@@ -3,7 +3,12 @@
 
 This app allow you load a video from youtube (using the id) or adding a url where is video uploaded. Next images will show you some instructions to use this app.
 
-To save data of this app (I don't use any permanent storage like LocalStorage). I'm using [React Api Context](https://reactjs.org/docs/context.html) to save data (clips and main video). For styles I used [material-ui](https://material-ui.com/).
+To save data of this app (I don't use any permanent storage like LocalStorage). I'm using [React Api Context](https://reactjs.org/docs/context.html) to save data (clips and main video). For styles I used [material-ui](https://material-ui.com/). Also I used [create-react-app](https://github.com/facebook/create-react-app) to create basic template for this app.
+
+To run the app you must install dependencies and start it:
+
+1. `npm install` or `yarn install`
+2. `npm start` or `yarn start`
 
 ![App init](screenshots/0-ch-init.png)
 ![Playing default video](screenshots/1-ch-init-playing.png)
