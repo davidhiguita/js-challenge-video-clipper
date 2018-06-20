@@ -34,7 +34,7 @@ const VideoList = () => {
     const renderMainVideo = (activeVideo, globalHandle, isPlayingVideo, mainVideo) => (
         <VideoItem
             active={activeVideo.id === mainVideo.id}
-            edit={() => globalHandle.toggleModalCreate('video', 'edit', activeVideo)}
+            edit={() => globalHandle.toggleModalCreate('video', 'edit', mainVideo)}
             setActiveVideo={globalHandle.setActiveVideo}
             isClip={false}
             isPlayingVideo={isPlayingVideo}

@@ -31,7 +31,7 @@ class Player extends Component {
             return (
                 <iframe
                     allowFullScreen
-                    autoPlay={activeVideo.type === 'clip'}
+                    autoPlay
                     frameBorder="0"
                     ref={(video) => {
                         this.videoRef = video;

@@ -84,22 +84,31 @@ export class App extends Component {
     }
 
     togglePlayingActiveVideo = () => {
-        console.log(this.state.isPlayingVideo);
         this.setState(prevState => ({
             isPlayingVideo: !prevState.isPlayingVideo
         }));
     }
+
+    timeToSeconds = (time) => {
+        const timeArray = time.split(':').map(v => parseInt(v, 10));
+        return (timeArray[0] * 3600) + (timeArray[1] * 60) + timeArray[2];
+    };
 
     addClip = () => {
         const { mainVideo } = this.state;
         const newClip = { ...this.state.modalCreateInfo };
         delete newClip.actionType;
         delete newClip.visible;
+        const timeRange = {
+            start: mainVideo.isFromYoutube ? this.timeToSeconds(newClip.start) : newClip.start,
+            end: mainVideo.isFromYoutube ? this.timeToSeconds(newClip.end) : newClip.end
+        };
         const formattedUrl = mainVideo.isFromYoutube
-            ? `${mainVideo.url}?start=${newClip.start}&end=${newClip.end}`
-            : `${mainVideo.url}#t=${newClip.start},${newClip.end}`;
+            ? `${mainVideo.url}?start=${timeRange.start}&end=${timeRange.end}`
+            : `${mainVideo.url}#t=${timeRange.start},${timeRange.end}`;
         newClip.id = this.state.clips.length;
         newClip.url = formattedUrl;
+        newClip.isFromYoutube = mainVideo.isFromYoutube;
 
         this.setState(prevState => ({
             clips: [
@@ -130,24 +139,34 @@ export class App extends Component {
     editVideo = () => {
         const { clips, mainVideo, modalCreateInfo } = this.state;
         if (modalCreateInfo.type === 'video') {
-            this.setState(prevState => ({
-                mainVideo: {
-                    ...prevState.mainVideo,
-                    ...modalCreateInfo
-                },
+            const updatedModalCreateInfo = { ...modalCreateInfo };
+            updatedModalCreateInfo.url =
+                modalCreateInfo.isFromYoutube ?
+                    `https://www.youtube.com/embed/${modalCreateInfo.url}` :
+                    modalCreateInfo.url;
+            this.setState(() => ({
+                activeVideo: { ...updatedModalCreateInfo },
+                clips: [],
+                isPlayingVideo: !updatedModalCreateInfo.isFromYoutube,
+                mainVideo: { ...updatedModalCreateInfo },
                 modalCreateInfo: { ...modalCreateInitialState }
             }));
         } else {
             const currentClips = [...clips];
             const currentModalCreateInfo = { ...modalCreateInfo };
             const clipIndex = clips.findIndex(clip => clip.id === modalCreateInfo.id);
+            const timeRange = {
+                start: mainVideo.isFromYoutube ? this.timeToSeconds(currentModalCreateInfo.start) : currentModalCreateInfo.start,
+                end: mainVideo.isFromYoutube ? this.timeToSeconds(currentModalCreateInfo.end) : currentModalCreateInfo.end
+            };
             currentModalCreateInfo.url = modalCreateInfo.isFromYoutube
-                ? `${mainVideo.url}?start=${modalCreateInfo.start}&end=${modalCreateInfo.end}`
-                : `${mainVideo.url}#t=${modalCreateInfo.start},${modalCreateInfo.end}`;
+                ? `${mainVideo.url}?start=${timeRange.start}&end=${timeRange.end}`
+                : `${mainVideo.url}#t=${timeRange.start},${timeRange.end}`;
 
             currentClips[clipIndex] = currentModalCreateInfo;
 
             this.setState({
+                activeVideo: currentModalCreateInfo,
                 clips: currentClips,
                 modalCreateInfo: { ...modalCreateInitialState }
             });
@@ -224,7 +243,8 @@ export class App extends Component {
         }
         this.setState({
             activeVideo: clips[newActiveVideoIndex],
-            disabledControls: this.setDisabledControls(clips[newActiveVideoIndex])
+            disabledControls: this.setDisabledControls(clips[newActiveVideoIndex]),
+            isPlayingVideo: true
         });
     }
 
