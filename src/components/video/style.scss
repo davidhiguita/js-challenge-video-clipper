@@ -1,0 +1,40 @@
+.player {
+    display: flex;
+    flex: 50%;
+    flex-direction: column;
+    max-height: 50%;
+
+    &__video {
+        flex: 85%;
+        video {
+            width: 100%;
+            height: 38vh;
+        }
+    }
+
+    &__controls {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        flex: 15%;
+        padding: auto 10px;
+        padding-bottom: 5px;
+
+        &__range {
+            grid-column: 1 / span 9;
+            margin-left: 10px;
+        }
+
+        &__clip-time {
+            display: flex;
+            grid-column: 10 / span 2;
+            justify-content: center;
+            padding-top: 15px;
+        }
+
+        &__actions {
+            display: flex;
+            grid-column: 12 / span 1;
+        }
+    }
+}
+
