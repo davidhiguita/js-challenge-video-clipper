@@ -91,8 +91,6 @@ class App extends Component {
             video
         } = this.state;
 
-        console.log('state', activeUrl, clips);
-
         return (
             <div className="video-clipper">
                 <Video
