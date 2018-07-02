@@ -65,7 +65,7 @@ const Clips = ({
         {
             !clips.length ?
                 <div className="clips__no-data">
-                    No clips added
+                    No clips found
                 </div> : null
         }
     </div>
