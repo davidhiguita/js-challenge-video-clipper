@@ -187,7 +187,7 @@ class App extends Component {
                     video={video}
                 />
                 <Clips
-                    activeUrl={activeUrl}
+                    activeClipIndex={activeClipIndex}
                     clips={this.filterClips()}
                     setActiveClipIndex={this.setActiveClipIndex}
                     setActiveUrl={this.setActiveUrl}

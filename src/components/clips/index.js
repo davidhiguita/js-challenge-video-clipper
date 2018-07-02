@@ -21,7 +21,7 @@ const getTimeFromSeconds = (s) => {
 };
 
 const Clips = ({
-    activeUrl,
+    activeClipIndex,
     clips,
     setActiveClipIndex,
     setActiveUrl
@@ -36,7 +36,7 @@ const Clips = ({
                                 className={
                                     classNames(
                                         'clips__list-item',
-                                        { 'clips__list-item--active': activeUrl === item.url }
+                                        { 'clips__list-item--active': index === activeClipIndex }
                                     )
                                 }
                                 key={index}
@@ -72,7 +72,7 @@ const Clips = ({
 );
 
 Clips.propTypes = {
-    activeUrl: PropTypes.string.isRequired,
+    activeClipIndex: PropTypes.number.isRequired,
     clips: PropTypes.array.isRequired,
     setActiveClipIndex: PropTypes.func.isRequired,
     setActiveUrl: PropTypes.func.isRequired
