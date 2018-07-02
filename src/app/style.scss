@@ -10,6 +10,12 @@ html, body {
     flex-direction: column;
     height: 100vh;
 
+    .fab-filter {
+        bottom: 32px;
+        padding: 10px;
+        position: absolute;
+        right: 32px;
+    }
 }
 
 div[role=dialog] {

@@ -17,7 +17,7 @@ class ModalNewClip extends Component {
     addClip = () => {
         this.props.pushNewClip({ ...this.state });
         this.props.setVisible();
-        this.setState({ name: '', tags: '' });
+        this.setState({ name: '', tag: '' });
     }
 
     closeModal = () => {

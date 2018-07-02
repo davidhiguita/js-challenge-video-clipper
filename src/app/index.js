@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 
+import InputAdornment from '@material-ui/core/InputAdornment';
+import SearchIcon from '@material-ui/icons/Search';
+import TextField from '@material-ui/core/TextField';
+
 // @components
 import Clips from '../components/clips';
 import Video from '../components/video';
@@ -25,7 +29,7 @@ class App extends Component {
             start: 0,
             end: 0
         },
-        // videoRef: null,
+        tagToFilter: '',
         video: {
             minutes: 0,
             seconds: 0,
@@ -79,6 +83,8 @@ class App extends Component {
         this.setState(({ modalVisibility }) => ({ modalVisibility: !modalVisibility }));
     };
 
+    setTagToFilter = e => this.setState({ tagToFilter: e.target.value });
+
     addClip = () => {
         this.setNewClipModalVisibility();
     }
@@ -119,6 +125,14 @@ class App extends Component {
         });
     }
 
+    filterClips = () => {
+        const { clips, tagToFilter } = this.state;
+        if (!tagToFilter.length) {
+            return clips;
+        }
+        return clips.filter(clip => clip.tag === tagToFilter);
+    }
+
     updateState = (key, value, field = null) => {
         if (field) {
             this.setState(prevState => ({
@@ -142,6 +156,7 @@ class App extends Component {
             modalVisibility,
             newClipTime,
             newClipVisibility,
+            tagToFilter,
             video
         } = this.state;
 
@@ -161,9 +176,10 @@ class App extends Component {
                 />
                 <Clips
                     activeUrl={activeUrl}
-                    clips={clips}
+                    clips={this.filterClips()}
                     setActiveClipIndex={this.setActiveClipIndex}
                     setActiveUrl={this.setActiveUrl}
+                    filter={tagToFilter}
                 />
                 <ModalNewVideo
                     addNewVideo={this.addNewVideo}
@@ -175,6 +191,24 @@ class App extends Component {
                     pushNewClip={this.pushNewClip}
                     visible={newClipVisibility}
                 />
+
+                <div className="fab-filter">
+                    <TextField
+                        disabled={!clips.length}
+                        id="name"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            )
+                        }}
+                        value={tagToFilter}
+                        onChange={this.setTagToFilter}
+                        placeholder="Filter by tag"
+                        margin="normal"
+                    />
+                </div>
             </div>
         );
     }
