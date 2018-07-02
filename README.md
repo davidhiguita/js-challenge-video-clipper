@@ -38,7 +38,7 @@ When you click on a clip it will change its style to indicate active state. Also
 
 ![Playin clip](screenshots/7-playing-clip.png)
 
-If you want to play full video you can clicl play button on controls component.
+If you want to play full video you can click play button on controls component.
 
 ![Play main video again](screenshots/8-play-original-video.png)
 
