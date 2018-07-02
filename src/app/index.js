@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 // @components
 import Clips from '../components/clips';
 import Video from '../components/video';
+import Controls from '../components/controls';
 import ModalNewVideo from './modal-new-video';
 import ModalNewClip from './modal-new-clip';
 
@@ -58,7 +59,7 @@ class App extends Component {
                         newIndex = currentIndex - 1;
                     }
                 } else if (type === 'next') {
-                    if (currentIndex < this.state.clips.length) {
+                    if (currentIndex < this.state.clips.length - 1) {
                         newIndex = currentIndex + 1;
                     }
                 }
@@ -165,6 +166,17 @@ class App extends Component {
                 <Video
                     activeClipIndex={activeClipIndex}
                     activeUrl={activeUrl}
+                    addClip={this.addClip}
+                    clips={clips}
+                    newClipTime={newClipTime}
+                    setActiveClipIndex={this.setActiveClipIndex}
+                    setActiveUrl={this.setActiveUrl}
+                    setModalVisibility={this.setModalVisibility}
+                    setNewClipTime={this.setNewClipTime}
+                    video={video}
+                />
+                <Controls
+                    activeClipIndex={activeClipIndex}
                     addClip={this.addClip}
                     clips={clips}
                     newClipTime={newClipTime}

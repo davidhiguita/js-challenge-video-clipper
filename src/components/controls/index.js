@@ -14,6 +14,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ReactiveBase, RangeSlider } from '@appbaseio/reactivesearch';
 
+import './style.scss';
+
 class Controls extends Component {
     state = {
         anchorMenuMore: null
@@ -58,8 +60,8 @@ class Controls extends Component {
         }
 
         return (
-            <div className="player__controls">
-                <div className="player__controls__range">
+            <div className="controls">
+                <div className="controls__range">
                     <ReactiveBase
                         app="car-store"
                         credentials="cf7QByt5e:d2d60548-82a9-43cc-8b40-93cbbe75c34c"
@@ -76,12 +78,12 @@ class Controls extends Component {
                     </ReactiveBase>
                 </div>
 
-                <div className="player__controls__clip-time">
+                <div className="controls__clip-time">
                     <span>{getTimeFromSeconds(newClipTime.start)} - {getTimeFromSeconds(newClipTime.end)}</span>
                 </div>
 
-                <div className="player__controls__actions">
-                    <div className="player__controls__actions__cut">
+                <div className="controls__actions">
+                    <div className="controls__actions__cut">
                         <Tooltip
                             id="tooltip-icon"
                             title="Create new clip"
@@ -96,7 +98,7 @@ class Controls extends Component {
                         </Tooltip>
                     </div>
 
-                    <div className="player__controls__actions__previous">
+                    <div className="controls__actions__previous">
                         <IconButton
                             aria-label="previous"
                             disabled={
@@ -108,7 +110,7 @@ class Controls extends Component {
                         </IconButton>
                     </div>
 
-                    <div className="player__controls__actions__next">
+                    <div className="controls__actions__next">
                         <IconButton
                             aria-label="next"
                             disabled={
@@ -137,7 +139,7 @@ class Controls extends Component {
                         </Tooltip>
                     </div>
 
-                    <div className="player__controls__actions__more">
+                    <div className="controls__actions__more">
                         <Menu
                             anchorEl={anchorMenuMore}
                             id="menu-more"
