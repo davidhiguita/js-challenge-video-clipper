@@ -15,9 +15,12 @@ class Video extends Component {
 
     render() {
         const {
+            activeClipIndex,
             activeUrl,
             addClip,
+            clips,
             newClipTime,
+            setActiveClipIndex,
             setActiveUrl,
             setModalVisibility,
             setNewClipTime,
@@ -36,8 +39,11 @@ class Video extends Component {
                 </div>
 
                 <Controls
+                    activeClipIndex={activeClipIndex}
                     addClip={addClip}
+                    clips={clips}
                     newClipTime={newClipTime}
+                    setActiveClipIndex={setActiveClipIndex}
                     setActiveUrl={setActiveUrl}
                     setModalVisibility={setModalVisibility}
                     setNewClipTime={setNewClipTime}
@@ -49,9 +55,12 @@ class Video extends Component {
 }
 
 Video.propTypes = {
+    activeClipIndex: PropTypes.number.isRequired,
     activeUrl: PropTypes.string.isRequired,
     addClip: PropTypes.func.isRequired,
+    clips: PropTypes.array.isRequired,
     newClipTime: PropTypes.object.isRequired,
+    setActiveClipIndex: PropTypes.func.isRequired,
     setActiveUrl: PropTypes.func.isRequired,
     setModalVisibility: PropTypes.func.isRequired,
     setNewClipTime: PropTypes.func.isRequired,

@@ -11,6 +11,7 @@ import './style.scss';
 class App extends Component {
     state = {
         activeUrl: '',
+        activeClipIndex: -1,
         clips: [],
         modalVisibility: false,
         newClipTime: {
@@ -24,6 +25,28 @@ class App extends Component {
             url: ''
         }
     }
+
+    setActiveClipIndex = (type = null, index = null) => {
+        let newIndex = this.state.activeClipIndex;
+        let newActiveUrl = this.state.activeUrl;
+        if (type) {
+            const currentIndex = this.state.activeClipIndex;
+            if (type === 'previous') {
+                if (currentIndex > 0) {
+                    newIndex = currentIndex - 1;
+                }
+            } else if (type === 'next') {
+                if (currentIndex < this.state.clips.length) {
+                    newIndex = currentIndex + 1;
+                }
+            }
+            newActiveUrl = this.state.clips[newIndex].url;
+        } else if (index >= 0) {
+            newIndex = index;
+            newActiveUrl = this.state.clips[newIndex].url;
+        }
+        this.setState({ activeClipIndex: newIndex, activeUrl: newActiveUrl });
+    };
 
     setActiveUrl = activeUrl => this.setState({ activeUrl })
 
@@ -59,6 +82,7 @@ class App extends Component {
         };
 
         this.setState({
+            activeClipIndex: -1,
             activeUrl: newVideoData.url,
             clips: [],
             modalVisibility: false,
@@ -84,6 +108,7 @@ class App extends Component {
 
     render() {
         const {
+            activeClipIndex,
             activeUrl,
             clips,
             modalVisibility,
@@ -91,12 +116,17 @@ class App extends Component {
             video
         } = this.state;
 
+        console.log('state', activeClipIndex, activeUrl);
+
         return (
             <div className="video-clipper">
                 <Video
+                    activeClipIndex={activeClipIndex}
                     activeUrl={activeUrl}
                     addClip={this.addClip}
+                    clips={clips}
                     newClipTime={newClipTime}
+                    setActiveClipIndex={this.setActiveClipIndex}
                     setActiveUrl={this.setActiveUrl}
                     setModalVisibility={this.setModalVisibility}
                     setNewClipTime={this.setNewClipTime}
@@ -105,6 +135,7 @@ class App extends Component {
                 <Clips
                     activeUrl={activeUrl}
                     clips={clips}
+                    setActiveClipIndex={this.setActiveClipIndex}
                     setActiveUrl={this.setActiveUrl}
                 />
                 <ModalNewVideo

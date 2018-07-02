@@ -20,7 +20,12 @@ const getTimeFromSeconds = (s) => {
     return `${getTwoDigits(minutes)}:${getTwoDigits(seconds)}`;
 };
 
-const Clips = ({ activeUrl, clips, setActiveUrl }) => (
+const Clips = ({
+    activeUrl,
+    clips,
+    setActiveClipIndex,
+    setActiveUrl
+}) => (
     <div className="clips">
         {
             clips.length ?
@@ -36,6 +41,7 @@ const Clips = ({ activeUrl, clips, setActiveUrl }) => (
                                 }
                                 key={index}
                                 onClick={() => {
+                                    setActiveClipIndex(null, index);
                                     setActiveUrl(item.url);
                                 }}
                             >
@@ -63,6 +69,7 @@ const Clips = ({ activeUrl, clips, setActiveUrl }) => (
 Clips.propTypes = {
     activeUrl: PropTypes.string.isRequired,
     clips: PropTypes.array.isRequired,
+    setActiveClipIndex: PropTypes.func.isRequired,
     setActiveUrl: PropTypes.func.isRequired
 };
 
