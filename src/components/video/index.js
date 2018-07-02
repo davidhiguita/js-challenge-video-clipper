@@ -31,6 +31,7 @@ class Video extends Component {
             <div className="player">
                 <div className="player__video">
                     <video
+                        autoPlay
                         controls
                         src={activeUrl}
                     >
