@@ -8,6 +8,11 @@ import ModalNewVideo from './modal-new-video';
 // @styles
 import './style.scss';
 
+const DIRECTION_KEYS = {
+    left: 'ArrowLeft',
+    right: 'ArrowRight'
+};
+
 class App extends Component {
     state = {
         activeUrl: '',
@@ -26,26 +31,38 @@ class App extends Component {
         }
     }
 
+    componentDidMount() {
+        document.addEventListener('keydown', (e) => {
+            if (e.key === DIRECTION_KEYS.left) {
+                this.setActiveClipIndex('previous');
+            } else if (e.key === DIRECTION_KEYS.right) {
+                this.setActiveClipIndex('next');
+            }
+        });
+    }
+
     setActiveClipIndex = (type = null, index = null) => {
         let newIndex = this.state.activeClipIndex;
         let newActiveUrl = this.state.activeUrl;
-        if (type) {
-            const currentIndex = this.state.activeClipIndex;
-            if (type === 'previous') {
-                if (currentIndex > 0) {
-                    newIndex = currentIndex - 1;
+        if (this.state.clips.length) {
+            if (type) {
+                const currentIndex = this.state.activeClipIndex;
+                if (type === 'previous') {
+                    if (currentIndex > 0) {
+                        newIndex = currentIndex - 1;
+                    }
+                } else if (type === 'next') {
+                    if (currentIndex < this.state.clips.length) {
+                        newIndex = currentIndex + 1;
+                    }
                 }
-            } else if (type === 'next') {
-                if (currentIndex < this.state.clips.length) {
-                    newIndex = currentIndex + 1;
-                }
+                newActiveUrl = this.state.clips[newIndex].url;
+            } else if (index >= 0) {
+                newIndex = index;
+                newActiveUrl = this.state.clips[newIndex].url;
             }
-            newActiveUrl = this.state.clips[newIndex].url;
-        } else if (index >= 0) {
-            newIndex = index;
-            newActiveUrl = this.state.clips[newIndex].url;
+            this.setState({ activeClipIndex: newIndex, activeUrl: newActiveUrl });
         }
-        this.setState({ activeClipIndex: newIndex, activeUrl: newActiveUrl });
     };
 
     setActiveUrl = activeUrl => this.setState({ activeUrl })
