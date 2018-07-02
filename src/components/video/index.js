@@ -11,7 +11,11 @@ import './style.scss';
 // https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4
 
 class Video extends Component {
-    state = {}
+    constructor(props) {
+        super(props);
+
+        this.state = {};
+    }
 
     render() {
         const {

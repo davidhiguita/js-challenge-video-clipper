@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import Clips from '../components/clips';
 import Video from '../components/video';
 import ModalNewVideo from './modal-new-video';
+import ModalNewClip from './modal-new-clip';
 
 // @styles
 import './style.scss';
@@ -19,6 +20,7 @@ class App extends Component {
         activeClipIndex: -1,
         clips: [],
         modalVisibility: false,
+        newClipVisibility: false,
         newClipTime: {
             start: 0,
             end: 0
@@ -69,18 +71,27 @@ class App extends Component {
 
     setNewClipTime = newClipTime => this.setState({ newClipTime })
 
+    setNewClipModalVisibility = () => {
+        this.setState(({ newClipVisibility }) => ({ newClipVisibility: !newClipVisibility }));
+    };
+
     setModalVisibility = () => {
         this.setState(({ modalVisibility }) => ({ modalVisibility: !modalVisibility }));
     };
 
     addClip = () => {
+        this.setNewClipModalVisibility();
+    }
+
+    pushNewClip = ({ name, tag }) => {
         this.setState(({ clips, newClipTime, video }) => ({
             clips: [
                 ...clips,
                 {
-                    name: `Clip #${clips.length + 1}`,
+                    name,
                     end: newClipTime.end,
                     start: newClipTime.start,
+                    tag,
                     url: `${video.url}#t=${newClipTime.start},${newClipTime.end}`
                 }
             ]
@@ -130,10 +141,9 @@ class App extends Component {
             clips,
             modalVisibility,
             newClipTime,
+            newClipVisibility,
             video
         } = this.state;
-
-        console.log('state', activeClipIndex, activeUrl);
 
         return (
             <div className="video-clipper">
@@ -159,6 +169,11 @@ class App extends Component {
                     addNewVideo={this.addNewVideo}
                     setVisible={this.setModalVisibility}
                     visible={modalVisibility}
+                />
+                <ModalNewClip
+                    setVisible={this.setNewClipModalVisibility}
+                    pushNewClip={this.pushNewClip}
+                    visible={newClipVisibility}
                 />
             </div>
         );

@@ -50,7 +50,12 @@ const Clips = ({
                                 </Avatar>
                                 <ListItemText
                                     primary={item.name}
-                                    secondary={`${getTimeFromSeconds(item.start)} - ${getTimeFromSeconds(item.end)}`}
+                                    secondary={
+                                        `
+                                        ${getTimeFromSeconds(item.start)} - ${getTimeFromSeconds(item.end)}
+                                           tag: ${item.tag}
+                                        `
+                                    }
                                 />
                             </ListItem>
                         ))
